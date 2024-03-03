@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="现役码农，node.js后端">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="ngtmuzi">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="javascript模板渲染研究笔记（一）"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="现役码农，node.js后端" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="ngtmuzi的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>javascript模板渲染研究笔记（一） - ngtmuzi的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//libs.cdnjs.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//libs.cdnjs.net/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">-->
+    <!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//libs.cdnjs.net/html5shiv/r29/html5.min.js"></script>
+    <script src="//libs.cdnjs.net/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    <script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4940863f3e5327757412f9c5b553462";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-169881979-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-169881979-1');
+</script>
+<script data-ad-client="ca-pub-2514403702120549" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/favicon.ico">
+    
+
+    <script>
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+              var clientWidth = docEl.clientWidth;
+              if (!clientWidth) return;
+              if(clientWidth>=640){
+                docEl.style.fontSize = '20px';
+              }else{
+                docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
+              }
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+    </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ngtmuzi</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>javascript模板渲染研究笔记（一）</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by ngtmuzi on
+                        
+                        2015-12-31
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/javascript/">#javascript</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/categories/班门弄斧/">班门弄斧</a>
+
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <p>只是一名本分的后端<code>nodejs</code>程序员的我被抓去写前端啦，前端各种东西都搞不懂啊，城里人真是会玩，各种框架各种脚本各种自动化各种模板渲染引擎各种转码，我也是被吓得不敢说话，然而代码还是要写的，研究了一通目前的各种主流框架（<code>angular</code>、<code>reactjs</code>、<code>vue</code>、<code>meteor</code>以及各种其他）之后，我最终还是决定使用<code>express</code>自带的<code>ejs</code></p>
+<p>即使是各大主流框架，在很大程度上还是离不开<code>jquery</code>，我当然也是如此，使用<code>ejs</code>仅仅是想将一些数据直接在后端渲染好，避免提供过多没必要的ajax接口费时费力。</p>
+<p>然而<code>ejs</code>使用中也是各种不爽，在<code>html</code>中加上各种<code>&lt;%%&gt;</code>真是不怎么好看啊，有的时候webstorm显示出来好多错误，排版也炸了，写得真心累，然后想了想，为什么一定要在视图中加上一堆逻辑语句呢，这种写法实在难看（<code>reactjs</code>的<code>jsx语法</code>在我眼中当然觉得更难看），然后脑洞一开，我就想到了万能的<code>jquery</code>，jq创建新html元素的语法简直优雅，所有的属性操作都能通过js来完成，就可以远离那些不合常理的模板语言了</p>
+<p>因此我开始研究在<code>ejs</code>中加入jq的功能，<code>cheerio</code>模块包含了各种jq的核心功能，它通常的用途是html解析，做抓取之类的功能，然而它构建html元素的函数任然还保留着，因此可以将它加入到ejs里，使用更优雅的语法来构建html——</p>
+<p>去翻了一下<code>ejs</code>的源码，大概能理解模板引擎的运行原理了：将原有的模板字符串拆开，将模板符号中包含的代码或表达式进行相应的处理，然后再拼回完整的html……可能说得不是很明白，可以看看这样一段模板语言<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;&#123;&#123; 1+1 &#125;&#125;&lt;/h1&gt;</span><br></pre></td></tr></table></figure></p>
+<p>所对应的中间函数：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> out = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  out += <span class="string">&#x27;&lt;h1&gt;&#x27;</span>;</span><br><span class="line">  out += <span class="built_in">escape</span>(<span class="number">1</span> + <span class="number">1</span>);</span><br><span class="line">  out += <span class="string">&#x27;&lt;/h1&gt;&#x27;</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">String</span>(out);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>中间函数做了简化，实际上它还在我们看不见的地方做更多复杂的操作，以使我们能使用简单的语言来进行模板渲染。</p>
+<p>可以看出来它实际上是做了字符串的拼接操作，模板内包含的表达式也被转义后输出（防止嵌入html标签），那为什么不直接转义成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;&#x27; + escape(1 + 1) + &#x27;&lt;/h1&gt;&#x27;</span><br></pre></td></tr></table></figure>
+<p>这种格式呢？因为需要支持各种看起来高大上的模板语法，如<code>if</code>、<code>each</code>之类的。</p>
+<hr>
+<p>好像有点跑题，刚才的问题是，我如何将<code>cheerio</code>模块加入到<code>ejs</code>中呢？</p>
+<p>我们都知道，<code>ejs</code>中如果要将某些变量的值带到模板中渲染，需要在render时传递<code>locals</code>对象，在这个对象里存储所有渲染需要的变量。</p>
+<p>但实际上在使用模板引擎时，我们并不会使用名叫<code>locals</code>或者其他类似<code>data</code>之类的变量，而是能直接使用这个变量里提供的属性，原因是，在上面那个函数里，一般还会有类似这样的语句（或者以其他方式实现）<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>(<span class="params">locals</span>)&#123;</span><br><span class="line">  <span class="title function_">with</span>(<span class="params">locals</span>)&#123;</span><br><span class="line">  ......</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>模板引擎将传入的<code>locals</code>对象使用with语句添加到当前作用域中，使我们能直接通过属性名来取值，因此想要加入$对象，可以直接在传<code>locals</code>对象的时候丢进去：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> cheerio = <span class="built_in">require</span>(<span class="string">&#x27;cheerio&#x27;</span>);</span><br><span class="line">res.<span class="title function_">render</span>(<span class="string">&#x27;index&#x27;</span>,&#123; <span class="attr">$</span>:cheerio &#125; );</span><br></pre></td></tr></table></figure></p>
+<p>这样子就能实现在<code>ejs</code>里实现类似这样的jq语法了<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;% <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;%&gt;</span><br><span class="line">    &lt;%- $(<span class="string">&#x27;&lt;a&gt;&#x27;</span>).<span class="title function_">text</span>(i.<span class="title function_">toString</span>()).<span class="title function_">attr</span>(<span class="string">&#x27;href&#x27;</span>,<span class="string">&#x27;#&#x27;</span>) %&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure></p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                    
+<hr/>
+<div id="disqus_thread"></div>
+<script>
+
+  /**
+   *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+   *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+  var disqus_config = function () {
+  this.page.url = "https://ngtmuzi.com/javascript模板渲染研究笔记（一）";  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = "javascript模板渲染研究笔记（一）"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ngtmuzi.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr/>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+                    <li>
+                        <a href="https://www.weibo.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-weibo fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://www.acfun.cn/u/ngtmuzi" target="_blank">
+                                <span class="fa fa-play fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="https://www.youtube.com/channel/UCCWrMEHE94DBUTmhz2eflVg" target="_blank">
+                                <span class="fa fa-youtube fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://space.bilibili.com/1772234" target="_blank">
+                                <span class="fa fa-stop fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+                    <li>
+                        <a href="https://github.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-github fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="/rss2.xml" target="_blank">
+                                <span class="fa fa-rss fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <div class="copyright">
+                    <p>
+                        &copy; 2024 ngtmuzi
+                    </p>
+                    <div class="text-muted">
+                        Original Theme <a target="_blank"
+                                          href="http://startbootstrap.com/template-overviews/clean-blog/">Clean
+                            Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a><br>
+                        Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a
+                                href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//libs.cdnjs.net/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//libs.cdnjs.net/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

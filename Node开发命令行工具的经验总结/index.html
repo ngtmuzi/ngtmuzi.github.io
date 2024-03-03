@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="现役码农，node.js后端">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="ngtmuzi">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Node开发命令行工具的经验总结"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="现役码农，node.js后端" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="ngtmuzi的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Node开发命令行工具的经验总结 - ngtmuzi的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//libs.cdnjs.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//libs.cdnjs.net/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">-->
+    <!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//libs.cdnjs.net/html5shiv/r29/html5.min.js"></script>
+    <script src="//libs.cdnjs.net/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    <script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4940863f3e5327757412f9c5b553462";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-169881979-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-169881979-1');
+</script>
+<script data-ad-client="ca-pub-2514403702120549" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/favicon.ico">
+    
+
+    <script>
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+              var clientWidth = docEl.clientWidth;
+              if (!clientWidth) return;
+              if(clientWidth>=640){
+                docEl.style.fontSize = '20px';
+              }else{
+                docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
+              }
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+    </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ngtmuzi</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Node开发命令行工具的经验总结</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by ngtmuzi on
+                        
+                        2019-03-12
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/nodejs/">#nodejs</a> <a href="/tags/shell/">#shell</a> <a href="/tags/cli/">#cli</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/categories/班门弄斧/">班门弄斧</a>
+
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>近半年接手了一个非web开发类的工作，一直跟数据、数据库和脚本打交道，原项目是windows服bat脚本和.NET命令行程序来跑各种任务的。之前我没有太接触过shell这块，碰到这些bat脚本确实有点把我难到了，各方面相比bash来说还是有很大差距，于是我着手开始做迁移工作</p>
+<p>这里推荐一个简单的bash入门教程</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/denysdovhan/bash-handbook/blob/master/translations/zh-CN/README.md">bash-handbook</a></p>
+</blockquote>
+<p>而复杂逻辑的exe部分，还是用我熟悉的node.js来重构，在此之前我还没有过命令行的开发经验，算是摸着石头过河</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/05/command-line-with-node.html">Node.js 命令行程序开发教程</a></p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/post/5af2a2cbf265da0b9c109f59">node.js 命令行工具(cli)</a></p>
+</blockquote>
+<h2 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h2><h3 id="链接为全局指令"><a href="#链接为全局指令" class="headerlink" title="链接为全局指令"></a>链接为全局指令</h3><p>大多数文档都会提到的一点，在<code>package.json</code>里的<code>bin</code>属性下写好指令名与代码路径后，执行<code>npm link</code>即可全局使用这个指令</p>
+<h3 id="注意当前目录"><a href="#注意当前目录" class="headerlink" title="注意当前目录"></a>注意当前目录</h3><p>记得代码可能会在任意目录上执行，因此用相对定位来读自己的代码目录内的文件是不可取的，如<code>let s = fs.readFileSync(&#39;./a.json&#39;)</code></p>
+<p>而应该改成使用<code>__dirname</code>来获取代码目录的绝对路径再去读文件，不过<code>require</code>函数不需要考虑这些，它会自己处理</p>
+<h3 id="获取和解析参数"><a href="#获取和解析参数" class="headerlink" title="获取和解析参数"></a>获取和解析参数</h3><p>我参考了npm上较为主流的几款命令行模块，看到大多是与具体函数耦合较紧的，需要用代码来配置命令行解析参数，这样的好处是能实现很多高级功能，如默认值、参数验证、自动生成帮助文档等。</p>
+<p>而我希望的是每次传不同的子命令时再去动态require代码，并且希望自定义帮助文档，因此只需要一套比较简单的解析库，拿到参数再自己处理，因此暂定使用了<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/yargs">yargs</a></p>
+<h3 id="输出markdown文档到控制台"><a href="#输出markdown文档到控制台" class="headerlink" title="输出markdown文档到控制台"></a>输出markdown文档到控制台</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> marked = <span class="built_in">require</span>(<span class="string">&#x27;marked&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TerminalRenderer</span> = <span class="built_in">require</span>(<span class="string">&#x27;marked-terminal&#x27;</span>);</span><br><span class="line"></span><br><span class="line">marked.<span class="title function_">setOptions</span>(&#123; <span class="attr">renderer</span>: <span class="keyword">new</span> <span class="title class_">TerminalRenderer</span>(&#123; <span class="attr">showSectionPrefix</span>: <span class="literal">false</span> &#125;) &#125;);</span><br><span class="line">process.<span class="property">stdout</span>.<span class="title function_">write</span>(<span class="title function_">marked</span>(fs.<span class="title function_">readFileSync</span>(path.<span class="title function_">join</span>(__dirname, <span class="string">&#x27;./readme.md&#x27;</span>)).<span class="title function_">toString</span>()));</span><br></pre></td></tr></table></figure>
+<p><code>marked-terminal</code>模块将markdown文本转换为带有颜色信息的ANSI格式，然后输出到控制台，赏心悦目</p>
+<p><img src="/img/node_cmd_1.jpg" alt="marked-terminal输出截图"></p>
+<h3 id="从输入流读入数据"><a href="#从输入流读入数据" class="headerlink" title="从输入流读入数据"></a>从输入流读入数据</h3><p>想实现一个标准的UNIX类控制台程序，支持管道是必不可少的，得益于node的封装，我们有很简单的办法来获取输入流的数据</p>
+<ul>
+<li>从<a target="_blank" rel="noopener" href="https://nodejs.org/dist/latest-v11.x/docs/api/process.html#process_process_stdin">process.stdin</a>流式读取数据，这个时候我之前写的<a href="/Node对流的Promise包装和并发控制/">Node对流的Promise包装和并发控制</a>模块就可以派上用场了</li>
+<li>直接用<code>fs.readFileSync(0)</code>读取全部内容，<code>0</code>就是标准输入流的文件句柄，当然前提是数据量不大或者需要完整解析的情况（如json），否则我们还是流式处理比较好</li>
+</ul>
+<h3 id="调试信息定向到stderr"><a href="#调试信息定向到stderr" class="headerlink" title="调试信息定向到stderr"></a>调试信息定向到stderr</h3><p>想保持标准输出，又想在控制台看到调试日志的输出，我们可以将调试的数据都发到<code>stderr</code>去，最终的运行结果才输出到<code>stdout</code></p>
+<p>在常用的日志模块<code>log4js</code>中，只要如此配置就好，这样所有日志输出都不会影响到标准输出流</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">log4js.<span class="title function_">configure</span>(&#123;</span><br><span class="line">  <span class="attr">appenders</span>: &#123; <span class="attr">err</span>: &#123; <span class="attr">type</span>: <span class="string">&#x27;stderr&#x27;</span> &#125; &#125;,</span><br><span class="line">  <span class="attr">categories</span>: &#123; <span class="attr">default</span>: &#123; <span class="attr">appenders</span>: [<span class="string">&#x27;err&#x27;</span>], <span class="attr">level</span>: <span class="string">&#x27;all&#x27;</span> &#125; &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://log4js-node.github.io/log4js-node/stderr.html">log4js文档</a></p>
+</blockquote>
+<h3 id="注意等待输出流写完成再关闭进程"><a href="#注意等待输出流写完成再关闭进程" class="headerlink" title="注意等待输出流写完成再关闭进程"></a>注意等待输出流写完成再关闭进程</h3><p>如果有输出流或者日志文件的情况，要注意不要轻易调用<code>process.exit</code>来主动结束进程，要等待流写入文件完成</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//等待流写入完成</span></span><br><span class="line"><span class="keyword">await</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">  ws.<span class="title function_">on</span>(<span class="string">&#x27;finish&#x27;</span>, resolve);</span><br><span class="line">  ws.<span class="title function_">end</span>();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//node4js的处理进程</span></span><br><span class="line">log4js.<span class="title function_">shutdown</span>(cb);</span><br></pre></td></tr></table></figure>
+<p>最好的情况是不写<code>process.exit</code>，只要记得<code>ws.end()</code>结束写入就行，当活动的流（包括标准输出流）全部完成，文件句柄释放后，进程自己会退出</p>
+<h3 id="使用更大的内存"><a href="#使用更大的内存" class="headerlink" title="使用更大的内存"></a>使用更大的内存</h3><p>node.js使用的v8引擎默认堆内存上限约1.7GB，而在环境变量中加上<code>NODE_OPTIONS</code>=<code>--max-old-space-size=40960</code>后可以扩大可使用的内存大小，当然用大内存不一定是好事，优化代码、精简数据结构、流式处理和避免闭包才是合理做法</p>
+<h3 id="使用烘焙-模板函数"><a href="#使用烘焙-模板函数" class="headerlink" title="使用烘焙/模板函数"></a>使用烘焙/模板函数</h3><p>在用一些模板或规则批量处理数据的时候，可以考虑使用预构建函数或烘焙模板来优化效率，前端的编译框架对这个就很有研究了，有兴趣可以了解下</p>
+<h3 id="对CSV做SQL查询"><a href="#对CSV做SQL查询" class="headerlink" title="对CSV做SQL查询"></a>对CSV做SQL查询</h3><p>有些复杂的业务需求需要对文件做数据统计汇总，原先是用<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/lodash">lodash</a>的一套函数来处理，但未免还是有些繁复和难以阅读，后来引入了<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/alasql">alasql</a>，支持流式地对文件进行sql查询，甚至支持连表语法，我目前也还在初步尝试阶段，有相关需求的可以了解下</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>得益于现在基本所有前端渲染/JS预编译框架都会用Node的CLI工具来提供服务，npm上会有很多方便的模块供我们使用，在这之上使用Node来开发命令行工具还是很方便快捷的，在shell上如果有复杂的实现需求，不妨试试用Node编写代码来处理</p>
+<p>关于控制台程序的一些理解和指导，推荐阅读《UNIX编程艺术》</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                    
+<hr/>
+<div id="disqus_thread"></div>
+<script>
+
+  /**
+   *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+   *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+  var disqus_config = function () {
+  this.page.url = "https://ngtmuzi.com/Node开发命令行工具的经验总结";  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = "Node开发命令行工具的经验总结"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ngtmuzi.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr/>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+                    <li>
+                        <a href="https://www.weibo.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-weibo fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://www.acfun.cn/u/ngtmuzi" target="_blank">
+                                <span class="fa fa-play fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="https://www.youtube.com/channel/UCCWrMEHE94DBUTmhz2eflVg" target="_blank">
+                                <span class="fa fa-youtube fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://space.bilibili.com/1772234" target="_blank">
+                                <span class="fa fa-stop fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+                    <li>
+                        <a href="https://github.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-github fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="/rss2.xml" target="_blank">
+                                <span class="fa fa-rss fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <div class="copyright">
+                    <p>
+                        &copy; 2024 ngtmuzi
+                    </p>
+                    <div class="text-muted">
+                        Original Theme <a target="_blank"
+                                          href="http://startbootstrap.com/template-overviews/clean-blog/">Clean
+                            Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a><br>
+                        Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a
+                                href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//libs.cdnjs.net/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//libs.cdnjs.net/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

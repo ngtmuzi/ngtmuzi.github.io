@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="现役码农，node.js后端">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="ngtmuzi">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="javaScript实现一个分数计算的类"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="现役码农，node.js后端" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="ngtmuzi的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>javaScript实现一个分数计算的类 - ngtmuzi的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//libs.cdnjs.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//libs.cdnjs.net/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">-->
+    <!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//libs.cdnjs.net/html5shiv/r29/html5.min.js"></script>
+    <script src="//libs.cdnjs.net/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    <script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4940863f3e5327757412f9c5b553462";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-169881979-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-169881979-1');
+</script>
+<script data-ad-client="ca-pub-2514403702120549" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/favicon.ico">
+    
+
+    <script>
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+              var clientWidth = docEl.clientWidth;
+              if (!clientWidth) return;
+              if(clientWidth>=640){
+                docEl.style.fontSize = '20px';
+              }else{
+                docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
+              }
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+    </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ngtmuzi</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>javaScript实现一个分数计算的类</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by ngtmuzi on
+                        
+                        2018-05-25
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/javascript/">#javascript</a> <a href="/tags/Class/">#Class</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/categories/神秘代码/">神秘代码</a>
+
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <p>一开始实现的时候钻到了牛角尖里，还想着要保留复杂分式的所有结构，那就要构建成树还要做递归遍历，各种计算也复杂得要死，后来想了一下每次计算都直接化成最简式不就好了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@property</span> &#123;<span class="type">Number</span>&#125; numerator  分子</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@property</span> &#123;<span class="type">Number</span>&#125; denominator  分母</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Fraction</span> &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 可以接受数值和分式</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> &#123;<span class="type">Number|Fraction</span>&#125; <span class="variable">numerator</span></span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> &#123;<span class="type">Number|Fraction</span>&#125; <span class="variable">denominator</span></span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return</span> &#123;<span class="type">Fraction</span>&#125;</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">numerator, denominator = <span class="number">1</span></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title class_">Number</span>.<span class="title function_">isInteger</span>(numerator) &amp;&amp; <span class="title class_">Number</span>.<span class="title function_">isInteger</span>(denominator)) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">numerator</span>   = numerator;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">denominator</span> = denominator;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (numerator <span class="keyword">instanceof</span> <span class="title class_">Fraction</span> || denominator <span class="keyword">instanceof</span> <span class="title class_">Fraction</span>) &#123;</span><br><span class="line">      numerator   = numerator <span class="keyword">instanceof</span> <span class="title class_">Fraction</span> ? numerator : <span class="keyword">new</span> <span class="title class_">Fraction</span>(numerator, <span class="number">1</span>);</span><br><span class="line">      denominator = denominator <span class="keyword">instanceof</span> <span class="title class_">Fraction</span> ? denominator : <span class="keyword">new</span> <span class="title class_">Fraction</span>(denominator, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> numerator.<span class="title function_">clone</span>().<span class="title function_">divide</span>(denominator);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;prams must be Number or Fraction&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">simplify</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 辗转相除法求最大公约数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> <span class="variable">num1</span></span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> <span class="variable">num2</span></span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return</span> &#123;<span class="type">number</span>&#125;</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">greatestCommonDivisor</span>(<span class="params">num1, num2</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> lesser  = <span class="title class_">Math</span>.<span class="title function_">abs</span>(num1);</span><br><span class="line">    <span class="keyword">let</span> greater = <span class="title class_">Math</span>.<span class="title function_">abs</span>(num2);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (lesser !== <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">let</span> t   = lesser;</span><br><span class="line">      lesser  = greater % lesser;</span><br><span class="line">      greater = t;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> greater;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">clone</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Fraction</span>(<span class="variable language_">this</span>.<span class="property">numerator</span>, <span class="variable language_">this</span>.<span class="property">denominator</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 化简分式</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return</span> &#123;<span class="type">Fraction</span>&#125;</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">simplify</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> gcd        = <span class="title class_">Fraction</span>.<span class="title function_">greatestCommonDivisor</span>(<span class="variable language_">this</span>.<span class="property">numerator</span>, <span class="variable language_">this</span>.<span class="property">denominator</span>);</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">numerator</span>   = <span class="variable language_">this</span>.<span class="property">numerator</span> / gcd;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">denominator</span> = <span class="variable language_">this</span>.<span class="property">denominator</span> / gcd;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 导出格式  a/b</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return</span> &#123;<span class="type">string</span>&#125;</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">toString</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;<span class="variable language_">this</span>.numerator&#125;</span>/<span class="subst">$&#123;<span class="variable language_">this</span>.denominator&#125;</span>`</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 从字符串解析出分式，支持 1/3 和  3 的格式</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> <span class="variable">str</span></span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return</span> &#123;<span class="type">Fraction</span>&#125;</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">fromString</span>(<span class="params">str = <span class="string">&#x27;&#x27;</span></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> arr = str.<span class="title function_">split</span>(<span class="string">&#x27;/&#x27;</span>).<span class="title function_">map</span>(<span class="title class_">Number</span>).<span class="title function_">filter</span>(<span class="title class_">Number</span>.<span class="property">isInteger</span>);</span><br><span class="line">    <span class="keyword">if</span> (arr.<span class="property">length</span> === <span class="number">1</span>) arr.<span class="title function_">push</span>(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (arr.<span class="property">length</span> !== <span class="number">2</span>) <span class="keyword">throw</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;params must be 2 Integer spread by &quot;/&quot;&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Fraction</span>(arr[<span class="number">0</span>], arr[<span class="number">1</span>]);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> <span class="title function_">value</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">numerator</span> / <span class="variable language_">this</span>.<span class="property">denominator</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">add</span>(<span class="params">frac1, frac2</span>) &#123;</span><br><span class="line">    frac1 = frac1 <span class="keyword">instanceof</span> <span class="title class_">Fraction</span> ? frac1.<span class="title function_">clone</span>() : <span class="keyword">new</span> <span class="title class_">Fraction</span>(frac1);</span><br><span class="line">    frac2 = frac2 <span class="keyword">instanceof</span> <span class="title class_">Fraction</span> ? frac2.<span class="title function_">clone</span>() : <span class="keyword">new</span> <span class="title class_">Fraction</span>(frac2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//  a/b + c/d = (a*d+b*c) / b*d</span></span><br><span class="line">    frac1.<span class="property">numerator</span>   = frac1.<span class="property">numerator</span> * frac2.<span class="property">denominator</span> + frac1.<span class="property">denominator</span> * frac2.<span class="property">numerator</span>;</span><br><span class="line">    frac1.<span class="property">denominator</span> = frac1.<span class="property">denominator</span> * frac2.<span class="property">denominator</span>;</span><br><span class="line">    <span class="keyword">return</span> frac1.<span class="title function_">simplify</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">add</span>(<span class="params">frac</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Fraction</span>.<span class="title function_">add</span>(<span class="variable language_">this</span>, frac);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">subtract</span>(<span class="params">frac1, frac2</span>) &#123;</span><br><span class="line">    frac1 = frac1 <span class="keyword">instanceof</span> <span class="title class_">Fraction</span> ? frac1.<span class="title function_">clone</span>() : <span class="keyword">new</span> <span class="title class_">Fraction</span>(frac1);</span><br><span class="line">    frac2 = frac2 <span class="keyword">instanceof</span> <span class="title class_">Fraction</span> ? frac2.<span class="title function_">clone</span>() : <span class="keyword">new</span> <span class="title class_">Fraction</span>(frac2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//  a/b + c/d = (a*d-b*c) / b*d</span></span><br><span class="line">    frac1.<span class="property">numerator</span>   = frac1.<span class="property">numerator</span> * frac2.<span class="property">denominator</span> - frac1.<span class="property">denominator</span> * frac2.<span class="property">numerator</span>;</span><br><span class="line">    frac1.<span class="property">denominator</span> = frac1.<span class="property">denominator</span> * frac2.<span class="property">denominator</span>;</span><br><span class="line">    <span class="keyword">return</span> frac1.<span class="title function_">simplify</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">subtract</span>(<span class="params">frac</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Fraction</span>.<span class="title function_">subtract</span>(<span class="variable language_">this</span>, frac);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">multiply</span>(<span class="params">frac1, frac2</span>) &#123;</span><br><span class="line">    frac1 = frac1 <span class="keyword">instanceof</span> <span class="title class_">Fraction</span> ? frac1.<span class="title function_">clone</span>() : <span class="keyword">new</span> <span class="title class_">Fraction</span>(frac1);</span><br><span class="line">    frac2 = frac2 <span class="keyword">instanceof</span> <span class="title class_">Fraction</span> ? frac2.<span class="title function_">clone</span>() : <span class="keyword">new</span> <span class="title class_">Fraction</span>(frac2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// (a/b)*(c/d) = (a*b)/(c*d)</span></span><br><span class="line">    frac1.<span class="property">numerator</span>   = frac1.<span class="property">numerator</span> * frac2.<span class="property">numerator</span>;</span><br><span class="line">    frac1.<span class="property">denominator</span> = frac1.<span class="property">denominator</span> * frac2.<span class="property">denominator</span>;</span><br><span class="line">    <span class="keyword">return</span> frac1.<span class="title function_">simplify</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">multiply</span>(<span class="params">frac</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Fraction</span>.<span class="title function_">multiply</span>(<span class="variable language_">this</span>, frac);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">divide</span>(<span class="params">frac1, frac2</span>) &#123;</span><br><span class="line">    frac1 = frac1 <span class="keyword">instanceof</span> <span class="title class_">Fraction</span> ? frac1.<span class="title function_">clone</span>() : <span class="keyword">new</span> <span class="title class_">Fraction</span>(frac1);</span><br><span class="line">    frac2 = frac2 <span class="keyword">instanceof</span> <span class="title class_">Fraction</span> ? frac2.<span class="title function_">clone</span>() : <span class="keyword">new</span> <span class="title class_">Fraction</span>(frac2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//  (a/b) / (c/d) = (a*d) / (b*c)</span></span><br><span class="line">    frac1.<span class="property">numerator</span>   = frac1.<span class="property">numerator</span> * frac2.<span class="property">denominator</span>;</span><br><span class="line">    frac1.<span class="property">denominator</span> = frac1.<span class="property">denominator</span> * frac2.<span class="property">numerator</span>;</span><br><span class="line">    <span class="keyword">return</span> frac1.<span class="title function_">simplify</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">divide</span>(<span class="params">frac</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Fraction</span>.<span class="title function_">divide</span>(<span class="variable language_">this</span>, frac);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>业务代码写得多了居然连这种简单的功能代码都生疏了，老了老了，原来计划的每月一篇博客肯定是鸽了</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                    
+<hr/>
+<div id="disqus_thread"></div>
+<script>
+
+  /**
+   *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+   *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+  var disqus_config = function () {
+  this.page.url = "https://ngtmuzi.com/javaScript实现一个分数计算的类";  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = "javaScript实现一个分数计算的类"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ngtmuzi.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr/>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+                    <li>
+                        <a href="https://www.weibo.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-weibo fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://www.acfun.cn/u/ngtmuzi" target="_blank">
+                                <span class="fa fa-play fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="https://www.youtube.com/channel/UCCWrMEHE94DBUTmhz2eflVg" target="_blank">
+                                <span class="fa fa-youtube fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://space.bilibili.com/1772234" target="_blank">
+                                <span class="fa fa-stop fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+                    <li>
+                        <a href="https://github.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-github fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="/rss2.xml" target="_blank">
+                                <span class="fa fa-rss fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <div class="copyright">
+                    <p>
+                        &copy; 2024 ngtmuzi
+                    </p>
+                    <div class="text-muted">
+                        Original Theme <a target="_blank"
+                                          href="http://startbootstrap.com/template-overviews/clean-blog/">Clean
+                            Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a><br>
+                        Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a
+                                href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//libs.cdnjs.net/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//libs.cdnjs.net/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="现役码农，node.js后端">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="ngtmuzi">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Proxy对象仿Scala的通配符函数调用"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="现役码农，node.js后端" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="ngtmuzi的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Proxy对象仿Scala的通配符函数调用 - ngtmuzi的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//libs.cdnjs.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//libs.cdnjs.net/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">-->
+    <!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//libs.cdnjs.net/html5shiv/r29/html5.min.js"></script>
+    <script src="//libs.cdnjs.net/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    <script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4940863f3e5327757412f9c5b553462";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-169881979-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-169881979-1');
+</script>
+<script data-ad-client="ca-pub-2514403702120549" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/favicon.ico">
+    
+
+    <script>
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+              var clientWidth = docEl.clientWidth;
+              if (!clientWidth) return;
+              if(clientWidth>=640){
+                docEl.style.fontSize = '20px';
+              }else{
+                docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
+              }
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+    </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ngtmuzi</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Proxy对象仿Scala的通配符函数调用</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by ngtmuzi on
+                        
+                        2016-04-23
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/javascript/">#javascript</a> <a href="/tags/Proxy/">#Proxy</a> <a href="/tags/es6/">#es6</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/categories/神秘代码/">神秘代码</a>
+
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <p><code>Proxy</code>对象是ES6加入的新特性，使用它来监听拦截对象的操作，可以使我们完成很多原本<code>javascript</code>无法完成的特性，在不长的<code>scala语言</code>学习过程中，发现这门语言有一个很神奇的通配符<code>_</code>，在函数链式调用中，<code>_</code>就代表了对象本身，这使得函数式编程的语法更加简洁，放在javascript中举例，就类似这个样子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>].<span class="title function_">map</span>(_.<span class="title function_">toString</span>());</span><br></pre></td></tr></table></figure></p>
+<p>就是对每个传来的对象，调用他们自身的<code>toString()</code>方法，使用ES6中的<code>Proxy</code>对象，可以很容易地模拟该特性<br>（nodejs v6.0已支持<code>Proxy</code>，代码亦可在最新版chrome中运行）<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _ = <span class="keyword">new</span> <span class="title class_">Proxy</span>(&#123;&#125;, &#123;</span><br><span class="line">  <span class="attr">get</span>: <span class="keyword">function</span> (<span class="params">target, key</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">obj</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (obj &amp;&amp; obj[key] &amp;&amp; <span class="keyword">typeof</span> obj[key] !== <span class="string">&#x27;function&#x27;</span>) <span class="keyword">return</span> obj[key];</span><br><span class="line">      <span class="keyword">var</span> args = <span class="variable language_">arguments</span>;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">obj</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (obj &amp;&amp; obj[key] &amp;&amp; <span class="keyword">typeof</span> obj[key] === <span class="string">&#x27;function&#x27;</span>)</span><br><span class="line">          <span class="keyword">return</span> obj[key].<span class="title function_">call</span>(obj, ...args);</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>除了调用对象自带的方法外，还有取出属性的功能，运行结果如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">32</span>, <span class="number">128</span>, <span class="number">1024</span>].<span class="title function_">map</span>(_.<span class="title function_">toString</span>(<span class="string">&#x27;2&#x27;</span>));</span><br><span class="line"><span class="comment">//return [&quot;1&quot;, &quot;100000&quot;, &quot;10000000&quot;, &quot;10000000000&quot;]</span></span><br><span class="line"></span><br><span class="line">[&#123;<span class="attr">v</span>:<span class="number">123</span>&#125;,&#123;<span class="attr">v</span>:<span class="number">456</span>&#125;].<span class="title function_">map</span>(_.<span class="property">v</span>);</span><br><span class="line"><span class="comment">//return [123, 456]</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="keyword">new</span> <span class="title class_">Date</span>())</span><br><span class="line">  .<span class="title function_">then</span>(_.<span class="title function_">getTime</span>())</span><br><span class="line">  .<span class="title function_">then</span>(_.<span class="title function_">toString</span>())</span><br><span class="line">  .<span class="title function_">then</span>(_.<span class="property">length</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>, <span class="variable language_">console</span>.<span class="property">error</span>);</span><br><span class="line"><span class="comment">//return 13</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="2016-6-8续"><a href="#2016-6-8续" class="headerlink" title="2016-6-8续"></a>2016-6-8续</h1><p>之前研究<code>Proxy</code>的时候写出来的那个<code>_</code>实际上还是有很大缺陷的，比如只能取一层的结构，参数的属性与方法同名时会取出参数的属性，不能正确捕捉到类型不对之类的错误，以及其他等等，于是就想做一个更完善的，现在想想当时的思路本身不太对，返回了一个函数就等于是限制了这个<code>_</code>的作用层数，不能继续往里面走，解决的方法当然是继续返回一个<code>Proxy</code>，思路如下：</p>
+<ul>
+<li><p><code>_</code>本身返回一个Proxy，取属性操作返回的也是一个<code>Proxy</code>，这些<code>Proxy</code>指向一个函数，并在被调用时按顺序取出第一个参数里的属性</p>
+</li>
+<li><p><code>_</code>可以预接收参数，接收的参数将在<code>Proxy</code>被调用时传给取出来的函数</p>
+</li>
+</ul>
+<p>难点是如何知道<code>Proxy</code>是在预传参的时候被调用还是在真正取值的时候被调用，实际上用返回函数的方法可能很难解决这种问题，在再次深入研究了<code>Proxy</code>的相关资料后，我意识到上述的两种情况，对应的<code>this</code>应该是不同的，后来又发现过长的调用链每次都要经过多个<code>Proxy</code>可能会影响效率，我又改成另外一种形式实现：<code>Proxy</code>负责收集参数和属性名，并在最终调用的时候新建一个<code>Function</code>，将整个调用链还原回原本的格式（想到这里我就感觉坑了，实际上我只是把 <code>s=&gt;s.xx.yy.zz()</code> 给简化成 <code>_.xx.yy.zz()</code> 而已，因此我特意加上了一个默认值的功能，好歹比箭头函数多了个错误捕获），再基于其他的一些需求，修修改改之后，变成了以下的格式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by ngtmuzi on 2016/5/29.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">receiveFn</span> = (<span class="params">...args</span>) =&gt; args;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * chain proxy maker</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@params</span> &#123;<span class="type">Any</span>&#125; <span class="variable">defaultValue</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@type</span> &#123;<span class="type">Function</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> chainProxy = <span class="variable language_">module</span>.<span class="property">exports</span> = <span class="keyword">function</span> (<span class="params">defaultValue</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> hasDefault   = <span class="variable language_">arguments</span>.<span class="property">length</span> &gt; <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> handle = &#123;</span><br><span class="line">    <span class="attr">get</span>: <span class="keyword">function</span> (<span class="params">target, property, receiver</span>) &#123;</span><br><span class="line">      <span class="comment">//set prototype to base Proxy Object _</span></span><br><span class="line">      <span class="keyword">if</span> (property === <span class="string">&#x27;prototype&#x27;</span>) <span class="keyword">return</span> _;</span><br><span class="line">      <span class="keyword">if</span> (property === <span class="string">&#x27;apply&#x27;</span>) <span class="keyword">return</span> target.<span class="property">apply</span>;</span><br><span class="line">      <span class="keyword">if</span> (property === <span class="string">&#x27;call&#x27;</span>) <span class="keyword">return</span> target.<span class="property">call</span>;</span><br><span class="line">      <span class="keyword">if</span> (property === <span class="string">&#x27;bind&#x27;</span>) <span class="keyword">return</span> target.<span class="property">bind</span>;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//is number</span></span><br><span class="line">      <span class="keyword">if</span> (!<span class="built_in">isNaN</span>(+property)) <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Proxy</span>(target.<span class="title function_">bind</span>(<span class="literal">null</span>, <span class="string">`[<span class="subst">$&#123;property&#125;</span>]`</span>), handle);</span><br><span class="line">      <span class="comment">//return a new Proxy, go on</span></span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Proxy</span>(target.<span class="title function_">bind</span>(<span class="literal">null</span>, <span class="string">&#x27;.&#x27;</span> + property), handle);</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="attr">apply</span>: <span class="keyword">function</span> (<span class="params">target, thisArg, argumentsList</span>) &#123;</span><br><span class="line">      <span class="comment">//if method calling on Proxy Object</span></span><br><span class="line">      <span class="keyword">if</span> (thisArg &amp;&amp; thisArg.<span class="property"><span class="keyword">prototype</span></span> === _) &#123;</span><br><span class="line">        <span class="comment">//save arguments to chain, and go on</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Proxy</span>(target.<span class="title function_">bind</span>(<span class="literal">null</span>, argumentsList), handle);</span><br><span class="line"></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;  <span class="comment">//calling on outside</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//get the calling chain</span></span><br><span class="line">        <span class="keyword">var</span> chains = <span class="title function_">target</span>();</span><br><span class="line">        <span class="comment">//pick arguments</span></span><br><span class="line">        <span class="keyword">var</span> args   = [].<span class="title function_">concat</span>(...chains.<span class="title function_">filter</span>(<span class="title class_">Array</span>.<span class="property">isArray</span>));</span><br><span class="line"></span><br><span class="line">        <span class="comment">//make function body</span></span><br><span class="line">        <span class="keyword">var</span> argNum     = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">var</span> expression = chains.<span class="title function_">reduce</span>(<span class="keyword">function</span> (<span class="params">a, b</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (<span class="keyword">typeof</span> b === <span class="string">&#x27;string&#x27;</span>) <span class="keyword">return</span> a + b;</span><br><span class="line">          <span class="keyword">else</span> <span class="keyword">if</span> (<span class="title class_">Array</span>.<span class="title function_">isArray</span>(b)) <span class="keyword">return</span> a + <span class="string">`(<span class="subst">$&#123;b.map(()=&gt; <span class="string">`args[<span class="subst">$&#123;argNum++&#125;</span>]`</span>)&#125;</span>)`</span>;</span><br><span class="line">        &#125;, <span class="string">&#x27;return _&#x27;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> fnStr = <span class="string">`</span></span><br><span class="line"><span class="string">        try&#123;</span></span><br><span class="line"><span class="string">          <span class="subst">$&#123;expression&#125;</span>;</span></span><br><span class="line"><span class="string">        &#125;catch(err)&#123;</span></span><br><span class="line"><span class="string">          <span class="subst">$&#123;hasDefault ? <span class="string">&#x27;return defaultValue;&#x27;</span> : <span class="string">&#x27;&#x27;</span>&#125;</span></span></span><br><span class="line"><span class="string">          err.stack = err.name + &#x27;: &#x27; + err.message + &#x27;\\n\\tat: &#x27; + &#x27;<span class="subst">$&#123;expression&#125;</span>&#x27;;</span></span><br><span class="line"><span class="string">          throw err;</span></span><br><span class="line"><span class="string">        &#125;`</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> finalFn = <span class="keyword">new</span> <span class="title class_">Function</span>([<span class="string">&#x27;args&#x27;</span>, <span class="string">&#x27;_&#x27;</span>, <span class="string">&#x27;defaultValue&#x27;</span>], fnStr);</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">finalFn</span>(args, argumentsList[<span class="number">0</span>], defaultValue);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> _ = <span class="keyword">new</span> <span class="title class_">Proxy</span>(receiveFn, handle);</span><br><span class="line">  <span class="keyword">return</span> _;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>测试代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _1 = <span class="built_in">require</span>(<span class="string">&#x27;../index&#x27;</span>)(<span class="literal">undefined</span>);</span><br><span class="line"><span class="keyword">var</span> _2 = <span class="built_in">require</span>(<span class="string">&#x27;../index&#x27;</span>)();</span><br><span class="line"><span class="keyword">var</span> _3 = <span class="built_in">require</span>(<span class="string">&#x27;../index&#x27;</span>)(&#123;<span class="attr">foo</span>: <span class="string">&#x27;bar&#x27;</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title class_">Promise</span>.<span class="title function_">resolve</span>(&#123;<span class="attr">a</span>: <span class="number">12333</span>&#125;)</span><br><span class="line">  .<span class="title function_">then</span>(_1.<span class="property">ab</span>.<span class="title function_">toString</span>().<span class="title function_">split</span>(<span class="string">&#x27;&#x27;</span>)[<span class="number">0</span>].<span class="title function_">toString</span>().<span class="title function_">replace</span>(<span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;replaceStr&#x27;</span>).<span class="property">length</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>.<span class="title function_">bind</span>(<span class="literal">null</span>, <span class="string">&#x27;result 1:&#x27;</span>), <span class="variable language_">console</span>.<span class="property">error</span>.<span class="title function_">bind</span>(<span class="literal">null</span>, <span class="string">&#x27;catch error1:&#x27;</span>))</span><br><span class="line"></span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">()=&gt;</span>(&#123;<span class="attr">a</span>: <span class="number">12333</span>&#125;))</span><br><span class="line">  .<span class="title function_">then</span>(_2.<span class="property">ab</span>.<span class="title function_">toString</span>().<span class="title function_">split</span>(<span class="string">&#x27;&#x27;</span>)[<span class="number">0</span>].<span class="title function_">toString</span>().<span class="title function_">replace</span>(<span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;replaceStr&#x27;</span>).<span class="property">length</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>.<span class="title function_">bind</span>(<span class="literal">null</span>, <span class="string">&#x27;result 2:&#x27;</span>), <span class="variable language_">console</span>.<span class="property">error</span>.<span class="title function_">bind</span>(<span class="literal">null</span>, <span class="string">&#x27;catch error2:&#x27;</span>))</span><br><span class="line"></span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">()=&gt;</span>(&#123;<span class="attr">a</span>: <span class="number">12333</span>&#125;))</span><br><span class="line">  .<span class="title function_">then</span>(_3.<span class="property">ab</span>.<span class="title function_">toString</span>().<span class="title function_">split</span>(<span class="string">&#x27;&#x27;</span>)[<span class="number">0</span>].<span class="title function_">toString</span>().<span class="title function_">replace</span>(<span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;replaceStr&#x27;</span>).<span class="property">length</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>.<span class="title function_">bind</span>(<span class="literal">null</span>, <span class="string">&#x27;result 2:&#x27;</span>), <span class="variable language_">console</span>.<span class="property">error</span>.<span class="title function_">bind</span>(<span class="literal">null</span>, <span class="string">&#x27;catch error2:&#x27;</span>));</span><br></pre></td></tr></table></figure></p>
+<p>本段代码已经做为模块提交到<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/chainproxy">npm</a>上</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                    
+<hr/>
+<div id="disqus_thread"></div>
+<script>
+
+  /**
+   *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+   *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+  var disqus_config = function () {
+  this.page.url = "https://ngtmuzi.com/Proxy对象仿Scala的通配符函数调用";  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = "Proxy对象仿Scala的通配符函数调用"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ngtmuzi.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr/>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+                    <li>
+                        <a href="https://www.weibo.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-weibo fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://www.acfun.cn/u/ngtmuzi" target="_blank">
+                                <span class="fa fa-play fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="https://www.youtube.com/channel/UCCWrMEHE94DBUTmhz2eflVg" target="_blank">
+                                <span class="fa fa-youtube fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://space.bilibili.com/1772234" target="_blank">
+                                <span class="fa fa-stop fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+                    <li>
+                        <a href="https://github.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-github fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="/rss2.xml" target="_blank">
+                                <span class="fa fa-rss fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <div class="copyright">
+                    <p>
+                        &copy; 2024 ngtmuzi
+                    </p>
+                    <div class="text-muted">
+                        Original Theme <a target="_blank"
+                                          href="http://startbootstrap.com/template-overviews/clean-blog/">Clean
+                            Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a><br>
+                        Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a
+                                href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//libs.cdnjs.net/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//libs.cdnjs.net/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

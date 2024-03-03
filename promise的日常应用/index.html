@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="现役码农，node.js后端">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="ngtmuzi">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="promise的日常应用"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="现役码农，node.js后端" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="ngtmuzi的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>promise的日常应用 - ngtmuzi的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//libs.cdnjs.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//libs.cdnjs.net/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">-->
+    <!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//libs.cdnjs.net/html5shiv/r29/html5.min.js"></script>
+    <script src="//libs.cdnjs.net/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    <script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4940863f3e5327757412f9c5b553462";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-169881979-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-169881979-1');
+</script>
+<script data-ad-client="ca-pub-2514403702120549" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/favicon.ico">
+    
+
+    <script>
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+              var clientWidth = docEl.clientWidth;
+              if (!clientWidth) return;
+              if(clientWidth>=640){
+                docEl.style.fontSize = '20px';
+              }else{
+                docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
+              }
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+    </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ngtmuzi</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>promise的日常应用</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by ngtmuzi on
+                        
+                        2015-12-30
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/nodejs/">#nodejs</a> <a href="/tags/promise/">#promise</a> <a href="/tags/javascript/">#javascript</a> <a href="/tags/express/">#express</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/categories/班门弄斧/">班门弄斧</a>
+
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <p><code>promise</code>在异步处理上真是比原始的回调好了太多，<code>promise</code>大法好~</p>
+<p>下面是一些日常工作中总结的各种神秘技巧：（使用<code>bluebird</code>模块）</p>
+<ul>
+<li><p>一般来说都是在<code>request</code>请求或数据库操作之后开始使用<code>promise</code>，当然要直接<code>Promise.resolve()</code>也是可以的</p>
+</li>
+<li><p><code>mongodb</code>模块原生返回<code>promise</code>对象，真是方便不少，不过它用的是<code>Q</code>模块，没太多精力去了解模块间差异的我会选择在初始连接数据库的时候更换<code>promise</code>库：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">MongoClient</span>.<span class="title function_">connect</span>(mongoUrl, &#123;<span class="attr">promiseLibrary</span>: <span class="title class_">Promise</span>&#125;)</span><br></pre></td></tr></table></figure></li>
+<li><p><code>mysql</code>方面好像除了<code>sequelize</code>外没什么比较好的<code>promise</code>的模块……因为目前的工作内容都是在<code>mongodb</code>上，对这方面也没做太多了解</p>
+</li>
+<li><p><code>redis</code>模块中<code>ioredis</code>据说不错，不过也没太多接触</p>
+</li>
+<li><p>至于网络请求，自然是<code>request</code>的<code>promise</code>版：<code>request</code>-<code>promise</code></p>
+</li>
+</ul>
+<hr>
+<p>当以上模块返回了promise对象，就可以用then一路走到黑啦</p>
+<p>一般来说我的express路由处理函数都会以这样结尾：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getArticle</span>(<span class="params">req, res, next</span>) &#123;</span><br><span class="line">  mongo.<span class="property">article</span>.<span class="title function_">find</span>(req.<span class="property">query</span>).<span class="title function_">sort</span>(&#123;<span class="attr">postTime</span>:-<span class="number">1</span>&#125;).<span class="title function_">toArray</span>()</span><br><span class="line">    .<span class="title function_">then</span>(res.<span class="property">ok</span>, next);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>res.ok</code>是自己为了方便而挂上的一个函数，一般类似于  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res.<span class="property">ok</span>  = res.<span class="property">json</span>.<span class="title function_">bind</span>(res);</span><br></pre></td></tr></table></figure>
+<p><code>next</code>函数用于将错误传到路由处理函数的末端——错误处理函数，在那里进行统一的错误返回。</p>
+<p>后来想想，用<code>next</code>函数统一处理错误固然看来很cooooooool，但也正因为此，对于各种错误的描述无法被带过去——用户并不在意你到底是数据库炸了还是代码写错了，他只想要一个中文的对错误的合理解释，类似“账号密码不正确！”之类的东西，因此考虑了一下，还是改成如下形式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">res.<span class="property">ok</span> = <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">  res.<span class="title function_">send</span>(<span class="number">200</span>,data);</span><br><span class="line">&#125;;</span><br><span class="line">res.<span class="property">err</span> = _.<span class="title function_">curry</span>(<span class="keyword">function</span> (<span class="params">code, err, ext</span>) &#123;</span><br><span class="line">  res.<span class="title function_">status</span>(code || <span class="number">500</span>);</span><br><span class="line">  res.<span class="title function_">json</span>(&#123;<span class="attr">msg</span>: err &amp;&amp; err.<span class="property">message</span> || err, <span class="attr">ext</span>: ext &amp;&amp; ext.<span class="property">message</span> || ext&#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>使用了<code>lodash</code>模块将函数柯里化——大概就是这样，虽然不太好说明原理，总之这是一种能让我这样处理回调的一种技术</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sms.<span class="title function_">csGetStatusReportExEx</span>()</span><br><span class="line">  .<span class="title function_">then</span>(res.<span class="property">ok</span>, res.<span class="title function_">err</span>(<span class="number">502</span>, <span class="string">&#x27;状态报告获取失败&#x27;</span>));</span><br></pre></td></tr></table></figure>
+<p>真正的错误信息会被带在<code>ext</code>里字段返回，另外<code>res.ok</code>也改成调用适用性更好的<code>res.send</code>函数<br>（注意这里有个坑，<code>res.send</code>一个数字的话它会以为你只返回一个http状态码，因此虽然<code>res.send(200,data)</code>这种格式已被弃用，但是在目前还是必须这么处理才行）</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                    
+<hr/>
+<div id="disqus_thread"></div>
+<script>
+
+  /**
+   *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+   *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+  var disqus_config = function () {
+  this.page.url = "https://ngtmuzi.com/promise的日常应用";  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = "promise的日常应用"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ngtmuzi.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr/>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+                    <li>
+                        <a href="https://www.weibo.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-weibo fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://www.acfun.cn/u/ngtmuzi" target="_blank">
+                                <span class="fa fa-play fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="https://www.youtube.com/channel/UCCWrMEHE94DBUTmhz2eflVg" target="_blank">
+                                <span class="fa fa-youtube fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://space.bilibili.com/1772234" target="_blank">
+                                <span class="fa fa-stop fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+                    <li>
+                        <a href="https://github.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-github fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="/rss2.xml" target="_blank">
+                                <span class="fa fa-rss fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <div class="copyright">
+                    <p>
+                        &copy; 2024 ngtmuzi
+                    </p>
+                    <div class="text-muted">
+                        Original Theme <a target="_blank"
+                                          href="http://startbootstrap.com/template-overviews/clean-blog/">Clean
+                            Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a><br>
+                        Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a
+                                href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//libs.cdnjs.net/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//libs.cdnjs.net/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

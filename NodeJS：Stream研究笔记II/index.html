@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="现役码农，node.js后端">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="ngtmuzi">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="NodeJS：Stream研究笔记II"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="现役码农，node.js后端" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="ngtmuzi的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>NodeJS：Stream研究笔记II - ngtmuzi的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//libs.cdnjs.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//libs.cdnjs.net/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">-->
+    <!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//libs.cdnjs.net/html5shiv/r29/html5.min.js"></script>
+    <script src="//libs.cdnjs.net/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    <script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4940863f3e5327757412f9c5b553462";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-169881979-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-169881979-1');
+</script>
+<script data-ad-client="ca-pub-2514403702120549" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/favicon.ico">
+    
+
+    <script>
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+              var clientWidth = docEl.clientWidth;
+              if (!clientWidth) return;
+              if(clientWidth>=640){
+                docEl.style.fontSize = '20px';
+              }else{
+                docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
+              }
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+    </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ngtmuzi</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>NodeJS：Stream研究笔记II</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by ngtmuzi on
+                        
+                        2020-04-05
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/nodejs/">#nodejs</a> <a href="/tags/stream/">#stream</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/categories/班门弄斧/">班门弄斧</a>
+
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <p>几年前写的<a href="/NodeJS：Stream研究笔记">研究笔记</a>现在回头看感觉全是在抄官方文档里的东西，近期真正在写stream的时候又发现其实根本没算了解，都没自己实现过读流和写流，于是补充一篇。</p>
+<p>以下内容主要来自官方文档及自行阅读源码，较多内部逻辑及细节已被省略，只抽象其主干思想：</p>
+<h2 id="Readable可读流"><a href="#Readable可读流" class="headerlink" title="Readable可读流"></a>Readable可读流</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://nodejs.org/dist/latest-v12.x/docs/api/stream.html#stream_implementing_a_readable_stream">官方文档-实现一个可读流</a></p>
+</blockquote>
+<ul>
+<li>所有可读流都必须提供<code>_read()</code>方法的实现，以从基础资源中获取数据。</li>
+<li>当调用<code>_read()</code>时，如果资源中已有可用数据，则应该使用<code>this.push(dataChunk)</code>将数据加入到读流的缓冲区队列中，然后<code>_read()</code>应该持续以上操作直到<code>push()</code>返回<code>false</code>。</li>
+</ul>
+<p><img src="/img/streamII-1.png" alt=""></p>
+<p>从结论来说，如果你不调用<code>push()</code>，可读流永远不会产生数据。</p>
+<p>关于可读流的两种读取模式在这里就不再赘述了，有趣的是可读流内部的缓冲区<code>buffer</code>并不是一个<code>Buffer</code>对象（因为流要支持对象模式，不能只支持二进制数据）或者<code>Array</code>，而是一个自己实现的单链表，带头尾指针，这里应该是考虑方便缓冲区的前后读写，并且不需要使用数组的索引功能。</p>
+<p><code>push()</code>函数还提到说当它返回<code>false</code>时就不应该继续写入了，其实代码内部中只是返回了缓冲区与<code>highWaterMark</code>的大小对比，其实并不会抛弃超过的数据，所以自己实现时多写一些内容进去是没问题的（比如一次批量拿到了N个数据，总不能写一半丢一半）。</p>
+<h2 id="Writable可写流"><a href="#Writable可写流" class="headerlink" title="Writable可写流"></a>Writable可写流</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://nodejs.org/dist/latest-v12.x/docs/api/stream.html#stream_implementing_a_writable_stream">官方文档-实现一个可写流</a></p>
+</blockquote>
+<ul>
+<li>所有可写流实现必须提供<code>_write</code>方法，以将数据发送到基础资源</li>
+<li>必须调用回调方法来表示本次写入的成功或失败</li>
+<li>在调用<code>_write()</code>和回调被调用之间如果有新的<code>write()</code>调用，则这些数据会先被放入缓冲区。调用回调时，流可能会发出“<code>drain</code>事件。</li>
+</ul>
+<p><img src="/img/streamII-2.png" alt=""></p>
+<p>可写流相对比可读流逻辑简单一点，就是包裹一下用户自定义的写方法，并且做缓冲队列，从这里我们能知道很重要的一点：可写流的<code>write()</code>是串行调用的，不支持并发，因此才有了一个<code>writev()</code>方法作为批量写入的替代。<code>write()</code>返回的<code>true/false</code>也仅是表示数据量是否达到了它的水位线，但继续向其写入也是没问题的（当然要注意内存用量）。</p>
+<h2 id="pipe方法"><a href="#pipe方法" class="headerlink" title="pipe方法"></a>pipe方法</h2><p>结合上面两张图之后再去看<code>pipe()</code>方法就会比较好理解了</p>
+<p><img src="/img/streamII-3.png" alt=""></p>
+<h2 id="Duplex双工流"><a href="#Duplex双工流" class="headerlink" title="Duplex双工流"></a>Duplex双工流</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://nodejs.org/dist/latest-v12.x/docs/api/stream.html#stream_implementing_a_duplex_stream">官方文档-实现一个双工流</a></p>
+</blockquote>
+<p>就是简单继承了可读流和可写流而已，注意它并不是像一根水管一样一边写了一边就可以读，需要用户自己去实现读写方法，换言之你可以让流入和流出的数据完全无关。双工流与分开实现一个可读流一个可写流的区别，主要在于它可以帮你管理一些流的状态，比如<code>allowHalfOpen</code>不允许半开，这样读流触发<code>end</code>事件（如<code>push(null)</code>）时会去关闭写流。不过我们一般需求的场景是反过来的：写流end后就结束读流，但双工流无法实现，因为它没有与你约定好中间的数据流转逻辑，不知道读流何时才能正确被结束，因此我们一般使用它的子类<code>Transform</code>转换流。</p>
+<h2 id="Transform转换流"><a href="#Transform转换流" class="headerlink" title="Transform转换流"></a>Transform转换流</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://nodejs.org/dist/latest-v12.x/docs/api/stream.html#stream_implementing_a_transform_stream">官方文档-实现一个转换流</a></p>
+</blockquote>
+<ul>
+<li><code>_transform()</code>可以当作是可写流的<code>_write()</code>的用途</li>
+<li><code>_flush()</code>是上游流发出<code>end</code>事件时触发的方法，可以在这里将残余的中间数据处理并输出到下游去</li>
+</ul>
+<p>转换流是双工流的子类，封装了一些转换的逻辑，主要思路就是：</p>
+<p>可写流<code>write()</code>接收数据 =&gt; _transform()方法 =&gt; push()方法 =&gt; 可读流产生数据输出</p>
+<p>因为它本质上还是对可读流、可写流的封装，因此类似可写流的<code>highWaterMark</code>与串行写入实现的流速控制、<code>pipe()</code>管道方法等特性都是可以享受的，Node内常见的对流的加密压缩也都是用它实现的，注意的一点是<code>_transform()</code>方法本身是不会帮你把数据<code>push()</code>到可读流的（只有用户自己知道什么时候数据才是可以被输出的），因此要注意自己保留中间数据、及时调用<code>push()</code>输出、以及在<code>_flush()</code>接口内处理残余数据。</p>
+<p><img src="/img/streamII-3.png" alt=""></p>
+<p>这里附一个简单易懂的例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> stream = <span class="built_in">require</span>(<span class="string">&#x27;stream&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将逐条数据缓存在内存，达到batchSize或上游流结束时，才向下游发出一条打包的data消息</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BatchStream</span> <span class="keyword">extends</span> <span class="title class_ inherited__">stream.Transform</span> &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> &#123;<span class="type">*</span>&#125; batchSize 批量大小</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> &#123;<span class="type">*</span>&#125; options 传递给基类stream的options，部分属性固定</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">batchSize = <span class="number">500</span>, options = &#123;&#125;</span>) &#123;</span><br><span class="line">    options.<span class="property">allowHalfOpen</span> = <span class="literal">false</span>;</span><br><span class="line">    options.<span class="property">writableObjectMode</span> = <span class="literal">true</span>;</span><br><span class="line">    options.<span class="property">readableObjectMode</span> = <span class="literal">true</span>;</span><br><span class="line">    options.<span class="property">highWaterMark</span>= <span class="number">1024</span>;</span><br><span class="line">    <span class="variable language_">super</span>(options);</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">batchSize</span> = batchSize;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">_chunks</span> = [];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">_transform</span>(<span class="params">chunk, encoding, callback</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">_chunks</span> = <span class="variable language_">this</span>.<span class="property">_chunks</span>.<span class="title function_">concat</span>(chunk);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="variable language_">this</span>.<span class="property">_chunks</span>.<span class="property">length</span> &gt;= <span class="variable language_">this</span>.<span class="property">batchSize</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> batch = <span class="variable language_">this</span>.<span class="property">_chunks</span>.<span class="title function_">splice</span>(<span class="number">0</span>, <span class="variable language_">this</span>.<span class="property">batchSize</span>);</span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">push</span>(batch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">callback</span>();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">_flush</span>(<span class="params">cb</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">_chunks</span>.<span class="property">length</span>) <span class="variable language_">this</span>.<span class="title function_">push</span>(<span class="variable language_">this</span>.<span class="property">_chunks</span>)</span><br><span class="line">    <span class="title function_">cb</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="title class_">BatchStream</span>;</span><br></pre></td></tr></table></figure>
+<p>刚开始编写流的实现时可能要注意的一点是，流本身带有的那些数据缓冲区、写入队列并不是给你用的，因此如果要你保留一些中间状态，必须要自己建变量存着，比如上面例子的<code>this._chunks</code>。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Node的流设计与Promise一样，本质上都是对回调、异步控制的封装和抽象，由于基于事件订阅的机制实现，它可以实现流速控制，更适合用于持续的异步过程，并可用<code>pipe()</code>管道方法将其简化，在使用中有以下点可以关注：</p>
+<ul>
+<li>可读流<code>on(&#39;data&#39;,cb)</code>形式订阅数据事件的形式，无法直接控制并发量，可以考虑用类似<a href="/Node对流的Promise包装和并发控制/">streamQueue</a>这样的形式再做一层控制，或者自己实现一个可写流，使用<code>pipe()</code>来做自动的流速控制</li>
+<li>可写流的<code>write()</code>实际是串行处理写入数据，本身虽然保证了数据的有序性，但不一定高效，在追求效率的时候，可以考虑实现<code>_writev()</code>接口，或者不在<code>_write()</code>内等待异步执行，直接回调<code>cb</code>，如果出现问题想要中断流程，可以再手动触发错误<code>ws.emit(&#39;error&#39;)</code></li>
+</ul>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                    
+<hr/>
+<div id="disqus_thread"></div>
+<script>
+
+  /**
+   *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+   *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+  var disqus_config = function () {
+  this.page.url = "https://ngtmuzi.com/NodeJS：Stream研究笔记II";  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = "NodeJS：Stream研究笔记II"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ngtmuzi.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr/>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+                    <li>
+                        <a href="https://www.weibo.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-weibo fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://www.acfun.cn/u/ngtmuzi" target="_blank">
+                                <span class="fa fa-play fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="https://www.youtube.com/channel/UCCWrMEHE94DBUTmhz2eflVg" target="_blank">
+                                <span class="fa fa-youtube fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://space.bilibili.com/1772234" target="_blank">
+                                <span class="fa fa-stop fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+                    <li>
+                        <a href="https://github.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-github fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="/rss2.xml" target="_blank">
+                                <span class="fa fa-rss fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <div class="copyright">
+                    <p>
+                        &copy; 2024 ngtmuzi
+                    </p>
+                    <div class="text-muted">
+                        Original Theme <a target="_blank"
+                                          href="http://startbootstrap.com/template-overviews/clean-blog/">Clean
+                            Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a><br>
+                        Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a
+                                href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//libs.cdnjs.net/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//libs.cdnjs.net/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

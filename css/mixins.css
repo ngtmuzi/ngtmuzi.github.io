@@ -1,0 +1,23 @@
+.transition-all {
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+}
+.background-cover {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+.serif {
+  font-family: 'Lora', 'Times New Roman', "微软雅黑 Light", serif;
+}
+.sans-serif {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, "微软雅黑", sans-serif;
+}
+code {
+  font-family: Consolas, "微软雅黑";
+}
+figure {
+  font-family: Consolas, "微软雅黑";
+}

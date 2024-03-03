@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="现役码农，node.js后端">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="ngtmuzi">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Node监视文件以实现热更新"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="现役码农，node.js后端" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="ngtmuzi的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Node监视文件以实现热更新 - ngtmuzi的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//libs.cdnjs.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//libs.cdnjs.net/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">-->
+    <!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//libs.cdnjs.net/html5shiv/r29/html5.min.js"></script>
+    <script src="//libs.cdnjs.net/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    <script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4940863f3e5327757412f9c5b553462";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-169881979-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-169881979-1');
+</script>
+<script data-ad-client="ca-pub-2514403702120549" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/favicon.ico">
+    
+
+    <script>
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+              var clientWidth = docEl.clientWidth;
+              if (!clientWidth) return;
+              if(clientWidth>=640){
+                docEl.style.fontSize = '20px';
+              }else{
+                docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
+              }
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+    </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ngtmuzi</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Node监视文件以实现热更新</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by ngtmuzi on
+                        
+                        2017-05-16
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/nodejs/">#nodejs</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/categories/神秘代码/">神秘代码</a>
+
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <p>在准备开始写的时候搜了一下相关的文章，看到了这篇fangshi的<a target="_blank" rel="noopener" href="http://fex.baidu.com/blog/2015/05/nodejs-hot-swapping/">《Node.js Web应用代码热更新的另类思路》</a>，写得很详细考虑得也很全，我的思路也类似这样，不过在替换旧模块上有些不同，总结出来权当抛砖引玉。</p>
+<p>为了方便说明，部分代码有省略细节，详细可以参见<a target="_blank" rel="noopener" href="https://github.com/ngtmuzi/wheel/blob/master/tools/watchModule/index.js">完整代码</a></p>
+<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>我的最开始需求倒不是要实现热更新这样听起来很炫酷的功能，只是想动态更新配置文件（JSON或JS）的内容到内存，避免每次改小小的配置都要重启进程</p>
+<h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><ul>
+<li>监视文件/目录改动</li>
+<li>清空require.cache中的模块缓存并重新require</li>
+<li>用新模块覆盖旧模块</li>
+</ul>
+<h2 id="监视文件-目录改动"><a href="#监视文件-目录改动" class="headerlink" title="监视文件/目录改动"></a>监视文件/目录改动</h2><h3 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h3><p>首先使用<code>path.resolve</code>来定位文件，其实使用<code>require.resolve</code>可以根据<a target="_blank" rel="noopener" href="https://nodejs.org/api/modules.html#modules_file_modules">node寻找模块的规则</a>更智能地定位到一个模块的入口文件（比如xxx/index.js）的，但更多情况下我们并不只是监视这个index.js而是想监视整个文件夹的改动（举个例子，index.js里require了同目录的xx.json并做了一系列计算最后把计算结果挂载<code>module.exports</code>上，这个时候单单监视index.js是没什么用的。）</p>
+<h3 id="监视-防抖动"><a href="#监视-防抖动" class="headerlink" title="监视/防抖动"></a>监视/防抖动</h3><p>原本是简单地使用<code>fs.watch</code>来监视文件，但其在linux下是无法监视到子目录/文件的改动的（参见<a target="_blank" rel="noopener" href="https://nodejs.org/api/fs.html#fs_caveats">node文档</a>），因此后来改用了被众多知名工具依赖的文件监视模块<a target="_blank" rel="noopener" href="https://github.com/paulmillr/chokidar">chokidar</a>，并且出于实际情况增加了防抖动<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chokidar.<span class="title function_">watch</span>(filePath).<span class="title function_">on</span>(<span class="string">&#x27;all&#x27;</span>, lodash.<span class="title function_">debounce</span>(update, <span class="number">300</span>));</span><br></pre></td></tr></table></figure></p>
+<h2 id="清空require-cache中的模块缓存并重新require"><a href="#清空require-cache中的模块缓存并重新require" class="headerlink" title="清空require.cache中的模块缓存并重新require"></a>清空require.cache中的模块缓存并重新require</h2><h3 id="清空缓存"><a href="#清空缓存" class="headerlink" title="清空缓存"></a>清空缓存</h3><p>考虑到监视的有可能是一个目录而非单个文件的情况，我们需要在清除时多考虑一下，把整个目录的引用都清除掉<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">keys</span>(<span class="built_in">require</span>.<span class="property">cache</span>).<span class="title function_">forEach</span>(<span class="keyword">function</span> (<span class="params">cachePath</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (cachePath.<span class="title function_">startsWith</span>(filePath)) &#123;</span><br><span class="line">    <span class="keyword">delete</span> <span class="built_in">require</span>.<span class="property">cache</span>[cachePath];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="重新require"><a href="#重新require" class="headerlink" title="重新require"></a>重新require</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> newModule = <span class="built_in">require</span>(filePath);</span><br></pre></td></tr></table></figure>
+<p>这个时候可能会报一些找不到文件，代码语法错误之类的同步错误，这个属于预期范围内，我的处理逻辑如下：</p>
+<ul>
+<li>第一次require是同步的，这时的错误会同步抛出，一般来说就会结束进程，因为确实没找到文件</li>
+<li>监视事件触发并重新require时产生的错误会丢给回调函数，并且保持原模块的内容不做更改（避免意外修改文件产生语法错误导致模块失效或进程退出）</li>
+</ul>
+<h2 id="用新模块覆盖旧模块"><a href="#用新模块覆盖旧模块" class="headerlink" title="用新模块覆盖旧模块"></a>用新模块覆盖旧模块</h2><p>如果我们在使用模块时能够遵守一个约定：<strong><code>module.exports</code>是Object，且其他模块永远从该模块所暴露的<code>module.exports</code>上取值</strong>，那么我们就不需要去做反射，闭包之类的处理，只要简单地使用<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">assign</span>(target,newMoudle)</span><br></pre></td></tr></table></figure><br>就可以在保持该对象的引用不变的情况下增改属性，考虑到有删除属性的情况，我自己写了一段比较暴力的覆写的函数<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">override</span>(<span class="params">target, source</span>) &#123;</span><br><span class="line">  <span class="title class_">Object</span>.<span class="title function_">keys</span>(target).<span class="title function_">forEach</span>(<span class="keyword">function</span> (<span class="params">key</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!source.<span class="title function_">hasOwnProperty</span>(key)) <span class="keyword">delete</span> target[key];</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="title class_">Object</span>.<span class="title function_">keys</span>(source).<span class="title function_">forEach</span>(<span class="keyword">function</span> (<span class="params">key</span>) &#123;</span><br><span class="line">    target[key] = source[key];</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> target;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>外部模块只要是遵守了上述约定，就可以完全透明地取得最新的属性内容，对于我主要的应用场景——动态读取配置文件来说，这个还是很容易遵守的</p>
+<h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><p>只有一个模块引用的话，直接调用即可<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> some = <span class="title function_">watchModule</span>(<span class="string">&#x27;./originModule&#x27;</span>);</span><br><span class="line"><span class="comment">//从module.exports上取得的一定是最新值</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(some.<span class="property">a</span>);</span><br></pre></td></tr></table></figure><br>当有多处需要引用时，建议使用一个代理的模块来挂载，这样在其他模块就可以直接用普通的require了（注意不要对一个模块多次调用watchModule，这样会产生重复事件）<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//originModule</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span>=&#123;<span class="attr">a</span>:<span class="number">1</span>&#125;; </span><br><span class="line"></span><br><span class="line"><span class="comment">//代理模块</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="title function_">watchModule</span>(<span class="string">&#x27;./originModule&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//其他模块</span></span><br><span class="line"><span class="keyword">const</span> some = <span class="built_in">require</span>(<span class="string">&#x27;proxyModule&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//从module.exports上取得的一定是最新值</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(some.<span class="property">a</span>);</span><br></pre></td></tr></table></figure><br>具体到上面文章提到的express动态挂载路由，<code>app.use</code>需要的是一个函数，因此我们无能为力——原函数已经被<code>app.use</code>挂载到中间件链上了，这种情况还是考虑使用一层闭包吧</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>思路都是类似的，只是我多加了一个约定，只要遵守这个约定我们就可以写出一个比较通用的监视模块，当然这也并不是万能的，比如module.exports必须是Object（其他类型可以用Object多包裹一层），很多极限条件也没考虑到（比如Proxy、不可变Object、原型链、不可枚举的属性等），但对于普通的业务代码和配置文件来说这应该是没有什么问题了  </p>
+<p>另外提醒一点，允许动态更新代码是<strong>非常危险</strong>的，比如我提到的这种允许读js作为配置文件的情况，万一js里来句<code>process.exit</code>或者其他恶意代码就挂了，可以根据实际需要来考虑加上限制</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ngtmuzi/wheel/blob/master/tools/watchModule/index.js">完整代码</a>，欢迎讨论指正。</p>
+<h2 id="补充：旧模块资源的释放"><a href="#补充：旧模块资源的释放" class="headerlink" title="补充：旧模块资源的释放"></a>补充：旧模块资源的释放</h2><p>阅读了上面的文章后才发现确实没考虑到这里，并且由于配置文件并不是频繁改动，在正式环境下也没出现过问题，但测试过后确实存在旧模块没有释放的情况（考虑还是不周啊），我们可以参考上面文章中fangshi给出的代码来清除引用<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="variable language_">module</span> = <span class="built_in">require</span>.<span class="property">cache</span>[modulePath];</span><br><span class="line"><span class="comment">// remove reference in module.parent</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable language_">module</span>.<span class="property">parent</span>) &#123;</span><br><span class="line">    <span class="variable language_">module</span>.<span class="property">parent</span>.<span class="property">children</span>.<span class="title function_">splice</span>(<span class="variable language_">module</span>.<span class="property">parent</span>.<span class="property">children</span>.<span class="title function_">indexOf</span>(<span class="variable language_">module</span>), <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                    
+<hr/>
+<div id="disqus_thread"></div>
+<script>
+
+  /**
+   *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+   *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+  var disqus_config = function () {
+  this.page.url = "https://ngtmuzi.com/Node监视文件以实现热更新";  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = "Node监视文件以实现热更新"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ngtmuzi.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr/>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+                    <li>
+                        <a href="https://www.weibo.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-weibo fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://www.acfun.cn/u/ngtmuzi" target="_blank">
+                                <span class="fa fa-play fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="https://www.youtube.com/channel/UCCWrMEHE94DBUTmhz2eflVg" target="_blank">
+                                <span class="fa fa-youtube fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://space.bilibili.com/1772234" target="_blank">
+                                <span class="fa fa-stop fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+                    <li>
+                        <a href="https://github.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-github fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="/rss2.xml" target="_blank">
+                                <span class="fa fa-rss fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <div class="copyright">
+                    <p>
+                        &copy; 2024 ngtmuzi
+                    </p>
+                    <div class="text-muted">
+                        Original Theme <a target="_blank"
+                                          href="http://startbootstrap.com/template-overviews/clean-blog/">Clean
+                            Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a><br>
+                        Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a
+                                href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//libs.cdnjs.net/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//libs.cdnjs.net/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

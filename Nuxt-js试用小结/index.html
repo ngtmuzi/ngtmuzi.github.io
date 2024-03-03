@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="现役码农，node.js后端">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="ngtmuzi">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Nuxt.js试用小结"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="现役码农，node.js后端" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="ngtmuzi的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Nuxt.js试用小结 - ngtmuzi的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//libs.cdnjs.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//libs.cdnjs.net/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">-->
+    <!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//libs.cdnjs.net/html5shiv/r29/html5.min.js"></script>
+    <script src="//libs.cdnjs.net/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    <script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4940863f3e5327757412f9c5b553462";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-169881979-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-169881979-1');
+</script>
+<script data-ad-client="ca-pub-2514403702120549" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/favicon.ico">
+    
+
+    <script>
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+              var clientWidth = docEl.clientWidth;
+              if (!clientWidth) return;
+              if(clientWidth>=640){
+                docEl.style.fontSize = '20px';
+              }else{
+                docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
+              }
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+    </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ngtmuzi</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Nuxt.js试用小结</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by ngtmuzi on
+                        
+                        2017-09-04
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/vue/">#vue</a> <a href="/tags/前端/">#前端</a> <a href="/tags/javascript/">#javascript</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/categories/班门弄斧/">班门弄斧</a>
+
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <p>以下为个人使用<code>Nuxt.js</code>的一些体会总结，并不全面，并且该项目还在频繁更新中（目前是v1.0.0-rc8），文档/中文文档并不完善，可以在小项目中先试手</p>
+<h2 id="什么是Nuxt-js"><a href="#什么是Nuxt-js" class="headerlink" title="什么是Nuxt.js"></a>什么是<code>Nuxt.js</code></h2><p><a target="_blank" rel="noopener" href="https://nuxtjs.org/guide">Nuxt.js官网</a></p>
+<blockquote>
+<p>Nuxt.js 是一个基于 Vue.js 的通用应用框架。<br>通过对客户端/服务端基础架构的抽象组织，Nuxt.js 主要关注的是应用的 UI渲染。<br>我们的目标是创建一个灵活的应用框架，你可以基于它初始化新项目的基础结构代码，或者在已有 Node.js 项目中使用 Nuxt.js。<br>Nuxt.js 预设了利用Vue.js开发服务端渲染的应用所需要的各种配置。</p>
+</blockquote>
+<p>可以把它认为是更完善的vue开发脚手架，但比之脚手架它提供了更多概念上的抽象定义，也实现了一些更高级的特性诸如服务端渲染</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>官方推荐使用<code>vue-cli</code>来安装<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ vue init nuxt/starter &lt;project-name&gt;</span><br><span class="line">$ <span class="built_in">cd</span> &lt;project-name&gt;</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure></p>
+<h2 id="概念介绍"><a href="#概念介绍" class="headerlink" title="概念介绍"></a>概念介绍</h2><p>主要摘录和总结自官方文档，但由于文档/中文文档更新速度没更上代码的速度，可能有部分出入</p>
+<h3 id="页面-page"><a href="#页面-page" class="headerlink" title="页面(page)"></a>页面(page)</h3><p>本质是vue组件，其文件在pages目录中的所处的路径决定了在url中访问的路径，并且<code>Nuxt.js</code>在其中新增了一些新属性，<a target="_blank" rel="noopener" href="https://nuxtjs.org/guide/views#pages">官方文档</a></p>
+<p>比较需要注意的就是<code>asyncData</code>和<code>layout</code>，前者用于在显示页面前获取异步的数据，后者指定渲染的布局</p>
+<h3 id="asyncData方法"><a href="#asyncData方法" class="headerlink" title="asyncData方法"></a>asyncData方法</h3><p><a target="_blank" rel="noopener" href="https://nuxtjs.org/api">官方文档</a></p>
+<p>在<code>page</code>组件传入vue渲染前会调用<code>asyncData</code>方法，其接受<code>Promise</code>的返回，当然现在更好的选择是使用<code>async/await</code>特性，最终返回的结果会并入<code>page</code>组件的<code>data</code>属性中</p>
+<p>注意该方法传递的第一个参数是<code>Nuxt.js</code>提供的该页面的<code>context</code>对象，其提供了不少常用的属性和方法，如判断当前渲染环境，以及路由跳转，跳到错误页面等，但比较神奇的一点是你除了在<code>asyncData</code>里，好像没法在别的地方找到这个<code>context</code>，我们可以在外部定义一个变量去指向它，以便在其他时候去使用（更坑的一点是，当使用服务端渲染时，前端是不会调用<code>asyncData</code>的，也就无法获得<code>context</code>）</p>
+<h3 id="布局-layout"><a href="#布局-layout" class="headerlink" title="布局(layout)"></a>布局(layout)</h3><p>在外部包裹<code>page</code>的布局主体（参考其他服务端渲染的框架如ejs），一些公共的，例如声明全局组件之类的语句可以放在这层</p>
+<h2 id="一些坑"><a href="#一些坑" class="headerlink" title="一些坑"></a>一些坑</h2><p>以下为使用<code>v1.0.0-rc6</code>版本遇到的一些问题，不确定新版本是否有修复，或者是否是个人理解有误</p>
+<h3 id="服务端渲染"><a href="#服务端渲染" class="headerlink" title="服务端渲染"></a>服务端渲染</h3><p>作为一个node后端开发，我至今无法在官方文档中找到一个简单明了的示例告诉我如何使用服务端渲染的功能，在官方的诸如<code>express</code>、<code>koa</code>示例程序中，我能看到的只有类似<code>app.use(nuxt.render)</code>的这种写法，这意味着我们并不能像传统的服务端渲染框架（以ejs为例）那样，传递一个包含着所有服务端数据的对象（<code>res.local</code>）给<code>render</code>函数</p>
+<p>据我的理解，<code>Nuxt.js</code>致力完成的是“通用”的vue框架，它想使这个框架无论是前端还是后端渲染，都使用同样的代码，也就是说它始终在<code>asyncData</code>函数中去获取数据，这使得我们原本的node后端连简单地传递一个内存变量都很难做到</p>
+<p>这是非常坑的一点，当<code>nuxt.config.js</code>中的<code>mode</code>处于<code>universal</code>时（默认是这个），前后端都有可能调用<code>asyncData</code>函数，<code>Nuxt.js</code>的示例里充斥着<code>axios</code>模块的引用，只是因为它在浏览器和node都可以运行，换句话来说，万一我们在<code>asyncData</code>使用的模块并不支持浏览器/node环境，就会出现问题</p>
+<p>因此我现在只将<code>Nuxt.js</code>视为一个前端spa应用脚手架（在<code>nuxt.config.js</code>中设置<code>mode=&#39;spa&#39;</code>），而不会去用于服务端渲染，也只有在设置<code>mode=&#39;spa&#39;</code>之后，我们才能使用<code>nuxt generate</code>来正确生成一个单页静态前端项目</p>
+<h3 id="plugins和modules"><a href="#plugins和modules" class="headerlink" title="plugins和modules"></a>plugins和modules</h3><p>官方建议我们把会反复用到的模块写在plugins里，甚至还要指明哪些是仅限服务端用的，哪些是浏览器用的，但却没有具体示例指出具体用途，至今还是很难理解这个逻辑</p>
+<p>最近的版本还出现了modules目录，看起来是用于放置服务端的模块，具体文档太少也无法理解</p>
+<h3 id="前端动态路由"><a href="#前端动态路由" class="headerlink" title="前端动态路由"></a>前端动态路由</h3><p>我们应该这样理解：<em>所有页面的路由逻辑都交给前端</em>，如果后端找不到url对应的接口/文件（即匹配不到任何路由，需要返回404的时候），应该渲染首页，由前端来告诉用户该页面不存在（Nuxt.js内置了错误页面）</p>
+<h2 id="使用总结"><a href="#使用总结" class="headerlink" title="使用总结"></a>使用总结</h2><p>个人用它结合<code>ElementUI</code>开发了一个简单的报表显示页面，不得不说预置layout+page的方式使得开发方便不少，但<code>asyncData</code>的运行环境问题还是一直在困扰我，最终还是抛弃了与印象中有很大出入的“服务端渲染”，设置<code>mode=&#39;spa&#39;</code>来生成静态前端页面，将它视为一个高级脚手架来用还是很不错的</p>
+<p>目前该项目还在频繁更新，尚未发布正式版1.0，文档更新滞后且稍显混乱，部分细节没有介绍，因此目前不建议用于正式项目</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                    
+<hr/>
+<div id="disqus_thread"></div>
+<script>
+
+  /**
+   *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+   *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+  var disqus_config = function () {
+  this.page.url = "https://ngtmuzi.com/Nuxt.js试用小结";  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = "Nuxt.js试用小结"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ngtmuzi.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr/>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+                    <li>
+                        <a href="https://www.weibo.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-weibo fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://www.acfun.cn/u/ngtmuzi" target="_blank">
+                                <span class="fa fa-play fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="https://www.youtube.com/channel/UCCWrMEHE94DBUTmhz2eflVg" target="_blank">
+                                <span class="fa fa-youtube fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://space.bilibili.com/1772234" target="_blank">
+                                <span class="fa fa-stop fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+                    <li>
+                        <a href="https://github.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-github fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="/rss2.xml" target="_blank">
+                                <span class="fa fa-rss fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <div class="copyright">
+                    <p>
+                        &copy; 2024 ngtmuzi
+                    </p>
+                    <div class="text-muted">
+                        Original Theme <a target="_blank"
+                                          href="http://startbootstrap.com/template-overviews/clean-blog/">Clean
+                            Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a><br>
+                        Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a
+                                href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//libs.cdnjs.net/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//libs.cdnjs.net/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

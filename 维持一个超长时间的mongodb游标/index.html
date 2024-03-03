@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="现役码农，node.js后端">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="ngtmuzi">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="维持一个超长时间的mongodb游标"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="现役码农，node.js后端" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="ngtmuzi的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>维持一个超长时间的mongodb游标 - ngtmuzi的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//libs.cdnjs.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//libs.cdnjs.net/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">-->
+    <!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//libs.cdnjs.net/html5shiv/r29/html5.min.js"></script>
+    <script src="//libs.cdnjs.net/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    <script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4940863f3e5327757412f9c5b553462";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-169881979-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-169881979-1');
+</script>
+<script data-ad-client="ca-pub-2514403702120549" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/favicon.ico">
+    
+
+    <script>
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+              var clientWidth = docEl.clientWidth;
+              if (!clientWidth) return;
+              if(clientWidth>=640){
+                docEl.style.fontSize = '20px';
+              }else{
+                docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
+              }
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+    </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ngtmuzi</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>维持一个超长时间的mongodb游标</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by ngtmuzi on
+                        
+                        2020-06-17
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/mongodb/">#mongodb</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/categories/班门弄斧/">班门弄斧</a>
+
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <p><strong>本文使用的是node.js版本的mongodb连接库</strong></p>
+<p>写这篇的时候才发现我根本没写过<code>tag</code>是 <a target="_blank" rel="noopener" href="https://ngtmuzi.com/tags/mongodb/">#mongodb</a> 的博客，足以见得知识浅薄，甚至这篇也没有什么技术含量</p>
+<p>有个有趣的工作是遍历某mongo库的索引，对其上符合要求的文档做某些操作，数据量大到可能要跑十天半个月，中途可能还要避开业务高峰期，而每次都用<code>find(&#123;_id:&#123;$gt:lastid&#125;&#125;).sort().skip().limit()</code>感觉又不够好玩</p>
+<p>于是计划用一个游标从头遍历到尾，这样的好处是不会重复发出多次op，在网络请求层面上还是要好一点的（游标有一个<code>batchSize</code>控制每次读取的数据量，可以视情况调整），而我又可以使用游标的流特性，来做一些下游打包、管道之类的好玩操作（见<a target="_blank" rel="noopener" href="https://ngtmuzi.com/NodeJS%EF%BC%9AStream%E7%A0%94%E7%A9%B6%E7%AC%94%E8%AE%B0II/">《Stream研究笔记II》</a>）</p>
+<h2 id="延长查询超时时间"><a href="#延长查询超时时间" class="headerlink" title="延长查询超时时间"></a>延长查询超时时间</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="http://mongodb.github.io/node-mongodb-native/3.5/api/MongoClient.html">官方文档-MongoClient</a></p>
+</blockquote>
+<p><code>MongoClient</code>建立实例时传递的<code>socketTimeoutMS</code>选项默认是6分钟，当查询耗时非常长时（比如没命中索引的<code>count()</code>），客户端将不再等待服务端返回并抛错，此选项只是以防万一，如果没有耗时很长的单次查询，这个可以保持默认</p>
+<h2 id="设置游标不超时"><a href="#设置游标不超时" class="headerlink" title="设置游标不超时"></a>设置游标不超时</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="http://mongodb.github.io/node-mongodb-native/3.5/api/Collection.html#find">官方文档-Collection.find()</a></p>
+</blockquote>
+<p>在<code>find()</code>的参数内传递<code>noCursorTimeout</code>，避免闲置的游标被服务端主动释放</p>
+<h2 id="设置session活跃"><a href="#设置session活跃" class="headerlink" title="设置session活跃"></a>设置session活跃</h2><p>然而只靠上面的选项还不够，<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/method/cursor.noCursorTimeout//">官方文档-cursor.noCursorTimeout</a> 又说了，服务端还是会清理闲置30分钟以上的<code>session</code>（每个<code>op</code>都包含在<code>session</code>中，不主动指定的话会生成一个隐式的），除非你主动地定期刷新<code>session</code>的活跃状态，连代码都附出来了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> session = db.<span class="title function_">getMongo</span>().<span class="title function_">startSession</span>()</span><br><span class="line"><span class="keyword">var</span> sessionId = session.<span class="title function_">getSessionId</span>().<span class="property">id</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> cursor = session.<span class="title function_">getDatabase</span>(<span class="string">&quot;examples&quot;</span>).<span class="title function_">getCollection</span>(<span class="string">&quot;data&quot;</span>).<span class="title function_">find</span>().<span class="title function_">noCursorTimeout</span>()</span><br><span class="line"><span class="keyword">var</span> refreshTimestamp = <span class="keyword">new</span> <span class="title class_">Date</span>() <span class="comment">// take note of time at operation start</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (cursor.<span class="title function_">hasNext</span>()) &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Check if more than 5 minutes have passed since the last refresh</span></span><br><span class="line">  <span class="keyword">if</span> ( (<span class="keyword">new</span> <span class="title class_">Date</span>()-refreshTimestamp)/<span class="number">1000</span> &gt; <span class="number">300</span> ) &#123;</span><br><span class="line">    <span class="title function_">print</span>(<span class="string">&quot;refreshing session&quot;</span>)</span><br><span class="line">    db.<span class="title function_">adminCommand</span>(&#123;<span class="string">&quot;refreshSessions&quot;</span> : [sessionId]&#125;)</span><br><span class="line">    refreshTimestamp = <span class="keyword">new</span> <span class="title class_">Date</span>()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// process cursor normally</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要自己显示声明一个<code>session</code>，在它之上发起游标查询，然后定期刷新<code>session</code>，这样游标就不会被服务器给释放掉了</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                    
+<hr/>
+<div id="disqus_thread"></div>
+<script>
+
+  /**
+   *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+   *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+  var disqus_config = function () {
+  this.page.url = "https://ngtmuzi.com/维持一个超长时间的mongodb游标";  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = "维持一个超长时间的mongodb游标"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ngtmuzi.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr/>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+                    <li>
+                        <a href="https://www.weibo.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-weibo fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://www.acfun.cn/u/ngtmuzi" target="_blank">
+                                <span class="fa fa-play fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="https://www.youtube.com/channel/UCCWrMEHE94DBUTmhz2eflVg" target="_blank">
+                                <span class="fa fa-youtube fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://space.bilibili.com/1772234" target="_blank">
+                                <span class="fa fa-stop fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+                    <li>
+                        <a href="https://github.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-github fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="/rss2.xml" target="_blank">
+                                <span class="fa fa-rss fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <div class="copyright">
+                    <p>
+                        &copy; 2024 ngtmuzi
+                    </p>
+                    <div class="text-muted">
+                        Original Theme <a target="_blank"
+                                          href="http://startbootstrap.com/template-overviews/clean-blog/">Clean
+                            Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a><br>
+                        Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a
+                                href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//libs.cdnjs.net/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//libs.cdnjs.net/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

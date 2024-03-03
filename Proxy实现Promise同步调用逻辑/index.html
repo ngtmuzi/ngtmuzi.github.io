@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="现役码农，node.js后端">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="ngtmuzi">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Proxy实现Promise同步调用逻辑"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="现役码农，node.js后端" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="ngtmuzi的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Proxy实现Promise同步调用逻辑 - ngtmuzi的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//libs.cdnjs.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//libs.cdnjs.net/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">-->
+    <!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//libs.cdnjs.net/html5shiv/r29/html5.min.js"></script>
+    <script src="//libs.cdnjs.net/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    <script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4940863f3e5327757412f9c5b553462";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-169881979-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-169881979-1');
+</script>
+<script data-ad-client="ca-pub-2514403702120549" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/favicon.ico">
+    
+
+    <script>
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+              var clientWidth = docEl.clientWidth;
+              if (!clientWidth) return;
+              if(clientWidth>=640){
+                docEl.style.fontSize = '20px';
+              }else{
+                docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
+              }
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+    </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ngtmuzi</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Proxy实现Promise同步调用逻辑</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by ngtmuzi on
+                        
+                        2016-08-08
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/javascript/">#javascript</a> <a href="/tags/Proxy/">#Proxy</a> <a href="/tags/Promise/">#Promise</a> <a href="/tags/ES6/">#ES6</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/categories/神秘代码/">神秘代码</a>
+
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <p>我们在很多使用Promise的时候都会有如下的用法<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">MongoClient</span>.<span class="title function_">connect</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">db</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> col = db.<span class="title function_">collection</span>(<span class="string">&#x27;something&#x27;</span>);</span><br><span class="line">    col.<span class="title function_">find</span>().<span class="title function_">toArray</span>()</span><br><span class="line">      .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>, <span class="variable language_">console</span>.<span class="property">error</span>);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>真正的连接对象在<code>connect()</code>之后才返回，只能在<code>then</code>回调中处理后续的数据库操作，而如果想复用这个连接，就需要在外面用另一个对象保持对它的引用，代码可能就会变成这个样子<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> db;</span><br><span class="line"><span class="title class_">MongoClient</span>.<span class="title function_">connect</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">_db</span>) &#123;</span><br><span class="line">    db = _db;</span><br><span class="line">  &#125;);</span><br><span class="line"><span class="comment">//别的地方</span></span><br><span class="line">db.<span class="title function_">collection</span>(<span class="string">&#x27;otherthing&#x27;</span>)....</span><br></pre></td></tr></table></figure></p>
+<p>这样的缺点是在连接未建立时访问<code>db</code>会引发异常，当然最正确的做法应该是<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> db = <span class="title class_">MongoClient</span>.<span class="title function_">connect</span>();</span><br><span class="line"><span class="comment">//别的地方</span></span><br><span class="line">db.<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">_db</span>) &#123;</span><br><span class="line">  _db.<span class="title function_">collection</span>(<span class="string">&#x27;otherthing&#x27;</span>)....</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>可以保持对一个连接的复用，但这样还是嵌了一层回调。</p>
+<p>在之前用<code>Proxy</code>写了几个玩具之后，有个念头渐渐浮上心头，<code>Proxy</code>也许可以改变这个模式，我们可以用<code>Proxy</code>预先收集好调用链，然后再将其内部转为<code>Promise</code>的调用链，简单来说思路如下：</p>
+<ol>
+<li><p>先将原始数据用<code>Promise.resolve</code>包裹，使其成为一个<code>Promise</code>对象，并返回该对象的代理<code>Proxy</code></p>
+</li>
+<li><p>对该<code>Proxy</code>的<code>get</code>和<code>apply</code>操作实际上就是在后面多加一个<code>.then</code>回调，并会继续返回<code>Proxy</code>，以实现链式调用</p>
+</li>
+<li><p>当将<code>Proxy</code>作为函数运行时对参数预先做<code>Promise.resolve</code>处理，使得它可以接受<code>Promise</code>参数</p>
+</li>
+<li><p>在内部的取值、调用时做错误捕获，使得在冗长的调用链中捕获错误成为可能</p>
+</li>
+<li><p>最终的值从<code>.then中</code>获取，<code>Promise</code>的特性保证了最终值的可达性</p>
+</li>
+</ol>
+<p>多说无用，以下是一些示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> request = <span class="built_in">require</span>(<span class="string">&#x27;request-promise&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> _       = <span class="built_in">require</span>(<span class="string">&#x27;promixy&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> parse   = <span class="title function_">_</span>(<span class="title class_">JSON</span>.<span class="property">parse</span>);            <span class="comment">//proxy a function</span></span><br><span class="line"><span class="keyword">var</span> docJson = <span class="title function_">request</span>(<span class="string">&#x27;https://nodejs.org/api/documentation.json&#x27;</span>);  <span class="comment">//a promise </span></span><br><span class="line"><span class="keyword">var</span> obj     = <span class="title function_">parse</span>(docJson);           <span class="comment">//wait the promise result</span></span><br><span class="line"></span><br><span class="line">obj.<span class="property">miscs</span>[<span class="number">0</span>].<span class="property">textRaw</span>.<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>, <span class="variable language_">console</span>.<span class="property">error</span>);</span><br></pre></td></tr></table></figure>
+<p>首先代理了<code>JSON.parse</code>使其可以接受<code>Promise</code>类型的参数，并挂上长长的一串取属性操作，得到的结果最后通过<code>console.log</code>打印出来</p>
+<p>当试图从<code>undefined</code>中读取属性时，会返回类似这样的错误<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TypeError: can&#x27;t read property &#x27;textRaw&#x27; in &#123;Promixy&#125;(1 args).miscs.10, it got a undefined</span><br></pre></td></tr></table></figure></p>
+<p>虽然有些不直观但好歹调用链是能看出来了<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">_</span>(<span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="title function_">_</span>(<span class="title function_">_</span>(<span class="title function_">_</span>(<span class="number">111</span>))))).<span class="title function_">then</span>(<span class="title function_">_</span>(<span class="variable language_">console</span>.<span class="property">log</span>), <span class="title function_">_</span>(<span class="variable language_">console</span>.<span class="property">error</span>));</span><br><span class="line"><span class="comment">//111</span></span><br></pre></td></tr></table></figure></p>
+<p>即使嵌了很多层，这个<code>Proxy</code>依然是<code>Promise</code>的代理，所以最后还是可以得到正确的结果的</p>
+<p>而刚才的mongo连接也可以简化为</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> db = <span class="title function_">_</span>(<span class="title class_">MongoClient</span>.<span class="title function_">connect</span>());</span><br><span class="line"><span class="comment">//别的地方</span></span><br><span class="line">db.<span class="title function_">collection</span>(<span class="string">&#x27;something&#x27;</span>)...</span><br></pre></td></tr></table></figure>
+<p>实质上是<code>Proxy</code>在内部代替用户嵌了一层<code>.then</code>，代码上更加简单直观，且从它上面取的所有属性依然有<code>Proxy</code>包裹，所以你甚至可以实现这样变态的调用方式</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">db.<span class="title function_">collection</span>(<span class="string">&#x27;something&#x27;</span>).<span class="title function_">find</span>().<span class="title function_">toArray</span>()[<span class="number">0</span>].<span class="property">somekey</span></span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>,<span class="variable language_">console</span>.<span class="property">error</span>);</span><br></pre></td></tr></table></figure>
+<p>直接取出集合第一条中的某个值，当然我不建议这种很难理解的写法</p>
+<p>综上，这个模块还有许多待发现的可用之处，我个人也将它用于了生产环境中，<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/promixy">npm地址</a>，如果你有任何建议或发现了bug，欢迎到<a target="_blank" rel="noopener" href="https://github.com/ngtmuzi/promixy">github</a>反馈</p>
+<h2 id="2017-07-04补充"><a href="#2017-07-04补充" class="headerlink" title="2017-07-04补充"></a>2017-07-04补充</h2><p>Node7.6之后的版本原生支持<code>async/await</code>，建议直接使用这个特性</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                    
+<hr/>
+<div id="disqus_thread"></div>
+<script>
+
+  /**
+   *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+   *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+  var disqus_config = function () {
+  this.page.url = "https://ngtmuzi.com/Proxy实现Promise同步调用逻辑";  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = "Proxy实现Promise同步调用逻辑"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ngtmuzi.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr/>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+                    <li>
+                        <a href="https://www.weibo.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-weibo fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://www.acfun.cn/u/ngtmuzi" target="_blank">
+                                <span class="fa fa-play fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="https://www.youtube.com/channel/UCCWrMEHE94DBUTmhz2eflVg" target="_blank">
+                                <span class="fa fa-youtube fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://space.bilibili.com/1772234" target="_blank">
+                                <span class="fa fa-stop fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+                    <li>
+                        <a href="https://github.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-github fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="/rss2.xml" target="_blank">
+                                <span class="fa fa-rss fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <div class="copyright">
+                    <p>
+                        &copy; 2024 ngtmuzi
+                    </p>
+                    <div class="text-muted">
+                        Original Theme <a target="_blank"
+                                          href="http://startbootstrap.com/template-overviews/clean-blog/">Clean
+                            Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a><br>
+                        Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a
+                                href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//libs.cdnjs.net/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//libs.cdnjs.net/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

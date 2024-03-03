@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="现役码农，node.js后端">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="ngtmuzi">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Node实现简单的redis同步锁"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="现役码农，node.js后端" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="ngtmuzi的博客"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Node实现简单的redis同步锁 - ngtmuzi的博客</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//libs.cdnjs.net/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//libs.cdnjs.net/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">-->
+    <!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//libs.cdnjs.net/html5shiv/r29/html5.min.js"></script>
+    <script src="//libs.cdnjs.net/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    <script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d4940863f3e5327757412f9c5b553462";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-169881979-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-169881979-1');
+</script>
+<script data-ad-client="ca-pub-2514403702120549" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/favicon.ico">
+    
+
+    <script>
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+              var clientWidth = docEl.clientWidth;
+              if (!clientWidth) return;
+              if(clientWidth>=640){
+                docEl.style.fontSize = '20px';
+              }else{
+                docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
+              }
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+    </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ngtmuzi</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Node实现简单的redis同步锁</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by ngtmuzi on
+                        
+                        2018-03-22
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/nodejs/">#nodejs</a> <a href="/tags/redis/">#redis</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/categories/神秘代码/">神秘代码</a>
+
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <p>也是实际的需求，某个业务有并发问题，同时处理会引起脏读脏写，之前实现了一个<a target="_blank" rel="noopener" href="https://ngtmuzi.com/%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84promise%E9%98%9F%E5%88%97/">promise队列</a>就是来解决这件事的，但现在服务器部署了多台，业务方随机访问，没办法在内存层面做到队列控制了，因此就想到用redis来实现一个简单锁来控制并发</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://redis.io/topics/distlock">Distributed locks with Redis</a></p>
+</blockquote>
+<p>来自官网上redis作者的文章，虽然是讲分布式锁redLock的，但也提到了使用redis实现简单锁的方法，并提出了他认为的简单锁的缺点：</p>
+<ul>
+<li>单点故障</li>
+<li>有部署主从的情况下，可能主服上的锁定操作还没同步到从服，主服就出现了故障，从服晋升为主服，使得之前的锁定不生效</li>
+</ul>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>在我这边的实际业务上看，redis的故障是可以容忍的，实话说我接触了redis挺长一段时间还从没见它崩过，因此就直接照着作者的思路来实现一个简单锁就好了：</p>
+<ol>
+<li>客户端使用<code>SET NX</code>语法设置一个会过期的键，当键存在时返回锁定错误（即表明已经这个键已经被别人锁着了） <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET resource_name my_random_value NX PX 30000</span><br></pre></td></tr></table></figure></li>
+<li>解锁时向redis服调用一段<code>lua</code>脚本 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> redis.call(<span class="string">&quot;get&quot;</span>,KEYS[<span class="number">1</span>]) == ARGV[<span class="number">1</span>] <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">return</span> redis.call(<span class="string">&quot;del&quot;</span>,KEYS[<span class="number">1</span>])</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+ 解锁时传递的value必须与锁定时的value相等，这是用于防止其他客户端在错误情况下会解锁其他人锁的情况，就是“解铃还须系铃人”的那种感觉</li>
+<li>若超过过期时间，客户端还没发起解锁，那么该键将会因为过期而被redis删除，避免产生死锁的情况</li>
+<li>更完善一点实现还会考虑加时的情况，即延长自己的锁定时间，也需要用lua脚本来做判断value是否相等</li>
+</ol>
+<h2 id="Node代码实现"><a href="#Node代码实现" class="headerlink" title="Node代码实现"></a>Node代码实现</h2><p>使用<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/ioredis">ioredis模块</a></p>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Locker</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">redis</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">redis</span>   = redis;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">lockMap</span> = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//定义lua脚本让它原子化执行</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">redis</span>.<span class="title function_">defineCommand</span>(<span class="string">&#x27;lua_unlock&#x27;</span>, &#123;</span><br><span class="line">      <span class="attr">numberOfKeys</span>: <span class="number">1</span>,</span><br><span class="line">      lua         : <span class="string">`</span></span><br><span class="line"><span class="string">        local remote_value = redis.call(&quot;get&quot;,KEYS[1])</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        if (not remote_value) then</span></span><br><span class="line"><span class="string">          return 0</span></span><br><span class="line"><span class="string">        elseif (remote_value == ARGV[1]) then</span></span><br><span class="line"><span class="string">          return redis.call(&quot;del&quot;,KEYS[1])</span></span><br><span class="line"><span class="string">        else</span></span><br><span class="line"><span class="string">          return -1</span></span><br><span class="line"><span class="string">        end`</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>传递一个ioredis实例进来，<code>lockMap</code>用来在内存在维护多组锁定相关的键值对，使用ioredis的功能定义一个解锁用的lua脚本以待后面调用，脚本稍微增加了一点内容</p>
+<h3 id="加锁"><a href="#加锁" class="headerlink" title="加锁"></a>加锁</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 锁定key，如已被锁定会抛错</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> <span class="variable">key</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> expire    过期时间(毫秒)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">Promise&lt;void&gt;</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">lock</span>(<span class="params">key, expire = <span class="number">10000</span></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> value = crypto.<span class="title function_">randomBytes</span>(<span class="number">16</span>).<span class="title function_">toString</span>(<span class="string">&#x27;hex&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> result = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">redis</span>.<span class="title function_">set</span>(key, value, <span class="string">&#x27;NX&#x27;</span>, <span class="string">&#x27;PX&#x27;</span>, expire);</span><br><span class="line">  <span class="keyword">if</span> (result === <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;lock error: key already exists&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">lockMap</span>.<span class="title function_">set</span>(key, &#123;value, expire, <span class="attr">time</span>: <span class="title class_">Date</span>.<span class="title function_">now</span>()&#125;);</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;OK&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成一个随机值做value，写入redis和内存中</p>
+<h3 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 解锁key，无论key是否存在，解锁是否成功，都不会抛错（除网络原因外），具体返回值:</span></span><br><span class="line"><span class="comment"> * null: key在本地不存在    0:key在redis上不存在    1:解锁成功      -1:value不对应，不能解锁</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> <span class="variable">key</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">Promise&lt;*&gt;</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">unLock</span>(<span class="params">key</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!<span class="variable language_">this</span>.<span class="property">lockMap</span>.<span class="title function_">has</span>(key)) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">let</span> &#123;value, expire, time&#125; = <span class="variable language_">this</span>.<span class="property">lockMap</span>.<span class="title function_">get</span>(key);</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">lockMap</span>.<span class="title function_">delete</span>(key);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">redis</span>.<span class="title function_">lua_unlock</span>(key, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从内存中找到对应key的value，把它们传给redis，使用lua脚本解锁，因为解锁基本算是个收尾的工作，因此各种没解锁成功的情况我不会抛错，有需要可以根据返回值自己处理</p>
+<h3 id="等待加锁"><a href="#等待加锁" class="headerlink" title="等待加锁"></a>等待加锁</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 每隔interval时间就尝试一次锁定，当用时超过waitTime就返回失败</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> <span class="variable">key</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> <span class="variable">expire</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> <span class="variable">interval</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> <span class="variable">waitTime</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="type">Promise&lt;void&gt;</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">waitLock</span>(<span class="params">key, expire, interval = <span class="number">500</span>, waitTime = <span class="number">5000</span></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> start_time = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">  <span class="keyword">let</span> result;</span><br><span class="line">  <span class="keyword">while</span> ((<span class="title class_">Date</span>.<span class="title function_">now</span>() - start_time) &lt; waitTime) &#123;</span><br><span class="line">    result = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="title function_">lock</span>(key, expire).<span class="title function_">catch</span>(<span class="function">() =&gt;</span> &#123;&#125;);</span><br><span class="line">    <span class="keyword">if</span> (result === <span class="string">&#x27;OK&#x27;</span>) <span class="keyword">return</span> <span class="string">&#x27;OK&#x27;</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">await</span> <span class="title function_">delay</span>(interval);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;waitLock timeout&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 等待一段时间（毫秒）</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> <span class="variable">ms</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">delay</span>(<span class="params">ms</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> <span class="built_in">setTimeout</span>(resolve, ms));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>对键重复地尝试加锁，直到抢占到锁资源，类似“连接池”的那种感觉</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ngtmuzi/wheel/blob/master/services/redisLocker.js">完整代码</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>redisLock的逻辑有点太复杂了，一般业务用简单的同步锁就好了</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                    
+<hr/>
+<div id="disqus_thread"></div>
+<script>
+
+  /**
+   *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+   *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+  var disqus_config = function () {
+  this.page.url = "https://ngtmuzi.com/Node实现简单的redis同步锁";  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = "Node实现简单的redis同步锁"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ngtmuzi.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr/>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-offset-0 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+                    <li>
+                        <a href="https://www.weibo.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-weibo fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://www.acfun.cn/u/ngtmuzi" target="_blank">
+                                <span class="fa fa-play fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="https://www.youtube.com/channel/UCCWrMEHE94DBUTmhz2eflVg" target="_blank">
+                                <span class="fa fa-youtube fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="http://space.bilibili.com/1772234" target="_blank">
+                                <span class="fa fa-stop fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+                    <li>
+                        <a href="https://github.com/ngtmuzi" target="_blank">
+                                <span class="fa fa-github fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li>
+                        <a href="/rss2.xml" target="_blank">
+                                <span class="fa fa-rss fa-lg">
+                                </span>
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <div class="copyright">
+                    <p>
+                        &copy; 2024 ngtmuzi
+                    </p>
+                    <div class="text-muted">
+                        Original Theme <a target="_blank"
+                                          href="http://startbootstrap.com/template-overviews/clean-blog/">Clean
+                            Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a><br>
+                        Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a
+                                href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//libs.cdnjs.net/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//libs.cdnjs.net/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.bootcss.com/featherlight/1.7.0/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
